@@ -51,7 +51,7 @@ const Signup = () => {
           <div className="p-5 ">
             <label htmlFor="email">Email : </label>
             <input
-              type="text"
+              type="email"
               id="email"
               name="email"
               required
