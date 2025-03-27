@@ -16,15 +16,11 @@ const Login = () => {
     };
 
     try {
-        navigate("/profile");
-        return;
-    //   const response = await axios.post("http://localhost:3002/signup", input);
-    //   console.log("done");
-
-      
-
-    //   setMessage(response.data.message);
-    //   setError(null);
+        
+      const response = await axios.post("http://localhost:3002/login", input);
+      console.log("done");
+      setMessage(response.data.message);
+      setError(null);
     } catch (error) {
       console.log("Error occurred:", error);
       if (error.response && error.response.data) {

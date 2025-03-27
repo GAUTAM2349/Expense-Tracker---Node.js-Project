@@ -1,7 +1,8 @@
 const { sequelize } = require("./config/database");
 
 const express = require("express");
-const { router } = require("./routes/signup");
+const { router : signupRouter } = require("./routes/signup");
+const {router : loginRouter }  = require('./routes/login');
 const { Signup } = require('./models');
 const cors = require('cors');
 const { logIncomingRequests } = require("./middlewares/requests");
@@ -14,7 +15,8 @@ app.use(cors());
 
 const PORT = 3002;
 
-app.use("/signup", router);
+app.use("/signup", signupRouter);
+app.use("/login", loginRouter);
 
 const syncDB = async() => {
     await sequelize.sync( { alter: true } );
