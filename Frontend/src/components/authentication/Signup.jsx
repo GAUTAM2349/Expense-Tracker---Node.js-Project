@@ -1,6 +1,10 @@
 import axios from "axios";
+import { useState } from "react";
 
 const Signup = () => {
+  const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password } = e.target;
@@ -11,10 +15,18 @@ const Signup = () => {
     };
 
     try {
-      await axios.post("http://localhost:3002/signup", input);
+      const response = await axios.post("http://localhost:3002/signup", input);
       console.log("done");
+      setMessage(response.data.message);
+      setError(null);
     } catch (error) {
-      console.log(error);
+      console.log("Error occurred:", error);
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+      } else {
+        setError("An unexpected error occurred. Please try again later.");
+      }
+      setMessage(null);
     }
   };
 
@@ -32,7 +44,7 @@ const Signup = () => {
               name="name"
               type="text"
               required
-              className=" bg-white outline-0 border border-black"
+              className=" bg-white outline-0 px-1 border border-black"
             />
           </div>
 
@@ -43,7 +55,7 @@ const Signup = () => {
               id="email"
               name="email"
               required
-              className=" bg-white outline-0 border border-black"
+              className=" bg-white outline-0  px-1 border border-black"
             />
           </div>
 
@@ -54,14 +66,24 @@ const Signup = () => {
               id="password"
               name="password"
               required
-              className=" bg-white outline-0 border border-black"
+              className=" bg-white outline-0 border border-black px-1"
             />
           </div>
 
-          <button className=" bg-green-500 px-3 py-1 border rounded-2xl">
+          <button type="submit" className=" bg-green-500 px-3 py-1 border rounded-2xl">
             SignUp
           </button>
+
+          {message && (
+          <div className="mt-4 text-green-500">{message}</div>
+        )}
+        {error && (
+          <div className="mt-4 text-red-500">{error}</div>
+        )}
+          
         </form>
+
+        
       </div>
     </>
   );

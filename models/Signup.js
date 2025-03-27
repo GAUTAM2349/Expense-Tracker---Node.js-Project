@@ -20,6 +20,9 @@ const Signup = sequelize.define("signup", {
         allowNull : false
     }
     
+},
+{
+    timestamps : false
 })
 
 module.exports = {Signup};

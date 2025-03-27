@@ -17,7 +17,7 @@ const PORT = 3002;
 app.use("/signup", router);
 
 const syncDB = async() => {
-    await sequelize.sync( { force : true } );
+    await sequelize.sync( { alter: true } );
     console.log("Database synced");
 }
 

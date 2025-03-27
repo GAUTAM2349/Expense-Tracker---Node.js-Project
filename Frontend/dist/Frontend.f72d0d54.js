@@ -23471,7 +23471,12 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
+var _react = require("react");
+var _s = $RefreshSig$();
 const Signup = ()=>{
+    _s();
+    const [message, setMessage] = (0, _react.useState)(null);
+    const [error, setError] = (0, _react.useState)(null);
     const handleFormSubmit = async (e)=>{
         e.preventDefault();
         const { name, email, password } = e.target;
@@ -23481,10 +23486,15 @@ const Signup = ()=>{
             password: password.value
         };
         try {
-            await (0, _axiosDefault.default).post("http://localhost:3002/signup", input);
+            const response = await (0, _axiosDefault.default).post("http://localhost:3002/signup", input);
             console.log("done");
+            setMessage(response.data.message);
+            setError(null);
         } catch (error) {
-            console.log(error);
+            console.log("Error occurred:", error);
+            if (error.response && error.response.data) setError(error.response.data.message);
+            else setError("An unexpected error occurred. Please try again later.");
+            setMessage(null);
         }
     };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
@@ -23502,7 +23512,7 @@ const Signup = ()=>{
                                 children: "Name : "
                             }, void 0, false, {
                                 fileName: "src/components/authentication/Signup.jsx",
-                                lineNumber: 29,
+                                lineNumber: 41,
                                 columnNumber: 13
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
@@ -23510,16 +23520,16 @@ const Signup = ()=>{
                                 name: "name",
                                 type: "text",
                                 required: true,
-                                className: " bg-white outline-0 border border-black"
+                                className: " bg-white outline-0 px-1 border border-black"
                             }, void 0, false, {
                                 fileName: "src/components/authentication/Signup.jsx",
-                                lineNumber: 30,
+                                lineNumber: 42,
                                 columnNumber: 13
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/authentication/Signup.jsx",
-                        lineNumber: 28,
+                        lineNumber: 40,
                         columnNumber: 11
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -23530,7 +23540,7 @@ const Signup = ()=>{
                                 children: "Email : "
                             }, void 0, false, {
                                 fileName: "src/components/authentication/Signup.jsx",
-                                lineNumber: 40,
+                                lineNumber: 52,
                                 columnNumber: 13
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
@@ -23538,16 +23548,16 @@ const Signup = ()=>{
                                 id: "email",
                                 name: "email",
                                 required: true,
-                                className: " bg-white outline-0 border border-black"
+                                className: " bg-white outline-0  px-1 border border-black"
                             }, void 0, false, {
                                 fileName: "src/components/authentication/Signup.jsx",
-                                lineNumber: 41,
+                                lineNumber: 53,
                                 columnNumber: 13
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/authentication/Signup.jsx",
-                        lineNumber: 39,
+                        lineNumber: 51,
                         columnNumber: 11
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -23558,7 +23568,7 @@ const Signup = ()=>{
                                 children: "Password : "
                             }, void 0, false, {
                                 fileName: "src/components/authentication/Signup.jsx",
-                                lineNumber: 51,
+                                lineNumber: 63,
                                 columnNumber: 13
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
@@ -23566,39 +23576,57 @@ const Signup = ()=>{
                                 id: "password",
                                 name: "password",
                                 required: true,
-                                className: " bg-white outline-0 border border-black"
+                                className: " bg-white outline-0 border border-black px-1"
                             }, void 0, false, {
                                 fileName: "src/components/authentication/Signup.jsx",
-                                lineNumber: 52,
+                                lineNumber: 64,
                                 columnNumber: 13
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/authentication/Signup.jsx",
-                        lineNumber: 50,
+                        lineNumber: 62,
                         columnNumber: 11
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                        type: "submit",
                         className: " bg-green-500 px-3 py-1 border rounded-2xl",
                         children: "SignUp"
                     }, void 0, false, {
                         fileName: "src/components/authentication/Signup.jsx",
-                        lineNumber: 61,
+                        lineNumber: 73,
+                        columnNumber: 11
+                    }, undefined),
+                    message && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: "mt-4 text-green-500",
+                        children: message
+                    }, void 0, false, {
+                        fileName: "src/components/authentication/Signup.jsx",
+                        lineNumber: 78,
+                        columnNumber: 11
+                    }, undefined),
+                    error && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                        className: "mt-4 text-red-500",
+                        children: error
+                    }, void 0, false, {
+                        fileName: "src/components/authentication/Signup.jsx",
+                        lineNumber: 81,
                         columnNumber: 11
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/components/authentication/Signup.jsx",
-                lineNumber: 24,
+                lineNumber: 36,
                 columnNumber: 9
             }, undefined)
         }, void 0, false, {
             fileName: "src/components/authentication/Signup.jsx",
-            lineNumber: 23,
+            lineNumber: 35,
             columnNumber: 7
         }, undefined)
     }, void 0, false);
 };
+_s(Signup, "KlwdX2Q70phu3v4CDVgp4YjkRw8=");
 _c = Signup;
 exports.default = Signup;
 var _c;
@@ -23609,7 +23637,7 @@ $RefreshReg$(_c, "Signup");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","axios":"kooH4","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"kooH4":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","axios":"kooH4","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"kooH4":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>(0, _axiosJsDefault.default));
