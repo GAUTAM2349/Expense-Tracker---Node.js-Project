@@ -19,7 +19,7 @@ app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 
 const syncDB = async() => {
-    await sequelize.sync( { alter: true } );
+    await sequelize.sync( { alter : true } );
     console.log("Database synced");
 }
 

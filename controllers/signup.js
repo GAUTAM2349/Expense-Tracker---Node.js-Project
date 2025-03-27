@@ -1,4 +1,5 @@
 const {Signup} = require('../models/Signup');
+const bcrypt = require('bcrypt');
 
 
 const signup = async (req,res) => {
@@ -30,8 +31,10 @@ const signup = async (req,res) => {
             })
         }
         
+        const saltRounds = 10;  
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const newUser = await Signup.create({ name, email, password });
+        const newUser = await Signup.create({ name, email, password : hashedPassword});
         console.log("\nuser created : "+ JSON.stringify(newUser));
         return res.status(200).json({
             success : true,
