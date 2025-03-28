@@ -5,6 +5,8 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Signup from "./src/components/authentication/Signup";
 import Login from "./src/components/authentication/Login";
 import Profile from "./src/components/user/Profile";
+import Expenses from "./src/components/expense/Expenses";
+import AddExpense from "./src/components/expense/AddExpense";
 
 const AppLayout = () => {
   return (
@@ -33,6 +35,17 @@ const appRouter = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
+
+      {
+        path : "/expenses",
+        element : <Expenses/>
+      },
+
+      {
+        path : "/add-expense",
+        element : <AddExpense/>
+      }
+      
     ],
   },
 ]);

@@ -5,3 +5,7 @@
     background-image : linear-gradient( rgba(8, 70, 23, 0.425),rgba(231, 224, 224, 0.37) ), url('./src/assets/singnup-background1.jpg');
     
 }
+
+.add-expense-cover{
+    /* background-image : linear-gradient( rgba(8, 70, 24, 0.562),rgba(231, 224, 224, 0.37) ) */
+}
