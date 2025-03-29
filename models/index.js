@@ -1,4 +1,10 @@
-const {sequelize} = require("../config/database");
-const {Signup} = require("./Signup");
+const { sequelize } = require("../config/database");
+const { User } = require("./User");
+const { Expense } = require("./Expense");
 
-module.exports = { Signup };
+User.hasMany(Expense);
+Expense.belongsTo(User, {
+  allowNull: false,
+});
+
+module.exports = { User, Expense };

@@ -3,7 +3,7 @@ const {sequelize} = require('../config/database');
 
 
 
-const Signup = sequelize.define("signup", {
+const User = sequelize.define("user", {
 
     name : {
         type : DataTypes.STRING,
@@ -25,4 +25,4 @@ const Signup = sequelize.define("signup", {
     timestamps : false
 })
 
-module.exports = {Signup};
+module.exports = {User};

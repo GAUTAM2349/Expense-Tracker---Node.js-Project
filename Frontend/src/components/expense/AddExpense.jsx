@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ViewExpenses } from "./Expenses";
+import api from "../../../config/axiosConfig";
 
 const AddExpense = () => {
   const [message, setMessage] = useState(null);
@@ -14,7 +15,7 @@ const AddExpense = () => {
     const expenseDate = event.target.elements["expense-date"].value;
     const expenseAmount = event.target.elements["expense-amount"].value;
     const expenseCategory = event.target.elements["expense-category"].value;
-
+    
     sendAddExpenseRequest({
       expenseName,
       expenseDate,
@@ -25,16 +26,16 @@ const AddExpense = () => {
 
   async function sendAddExpenseRequest(data) {
     try {
-      const response = await axios.post(
-        "http://localhost:3010/expense/add-expense",
-        data
-      );
+      
+      const response = await api.post("/expense/add-expense", data);
+      console.log("working..")
       setError(null);
-      setMessage("User added successfully");
+      setMessage("Expense Added");
     } catch (error) {
+      console.log(error);
       if (error.response && error.response.data)
-        setError(error.response.data.message);
-      else setError("Can't add user, some unexpected error!");
+        setError("some EERROOOOORR " + error.response.data.message);
+      else setError("Can't add expense, some unexpected error!");
     }
   }
 
@@ -95,11 +96,10 @@ const AddExpense = () => {
             Add expense
           </button>
 
-            { message && <div>{message}</div>}
-            { error && <div>{error}</div>}
+          {message && <div>{message}</div>}
+          {error && <div>{error}</div>}
 
-            <ViewExpenses/>
-          
+          <ViewExpenses />
         </form>
       </div>
     </>
@@ -107,18 +107,22 @@ const AddExpense = () => {
 };
 
 export const AddExpenseButton = () => {
-
   const navigate = useNavigate();
 
-  const handleNavigate = () =>{
-    navigate('/add-expense');
-  }
-  
+  const handleNavigate = () => {
+    navigate("/add-expense");
+  };
+
   return (
     <>
-      <button onClick={handleNavigate} className=" px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl">Add Expense</button>
+      <button
+        onClick={handleNavigate}
+        className=" px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
+      >
+        Add Expense
+      </button>
     </>
-  )
-}
+  );
+};
 
 export default AddExpense;

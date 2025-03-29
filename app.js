@@ -1,11 +1,10 @@
 const { sequelize } = require("./config/database");
 
 const express = require("express");
-const { router : signupRouter } = require("./routes/signup");
-const {router : loginRouter }  = require('./routes/login');
-const { Signup } = require('./models');
-const cors = require('cors');
+const { signupRouter, loginRouter, expenseRouter } = require("./routes");
+const cors = require("cors");
 const { logIncomingRequests } = require("./middlewares/requests");
+const usersOnly = require("./middlewares/auth");
 const app = express();
 
 app.use(logIncomingRequests);
@@ -17,11 +16,12 @@ const PORT = 3002;
 
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
+app.use("/expense", usersOnly, expenseRouter);
 
-const syncDB = async() => {
-    await sequelize.sync( { alter : true } );
-    console.log("Database synced");
-}
+const syncDB = async () => {
+  await sequelize.sync({ alter: true });
+  console.log("Database synced");
+};
 
 syncDB();
 

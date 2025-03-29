@@ -1,9 +1,9 @@
-const { Signup } = require("../models/Signup");
-const bcrypt = require('bcrypt');
+const { User } = require("../models/User");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const { setUser } = require("../services/auth");
 
 const login = async (req, res) => {
-  console.log(" request came for login ");
-
   const { email, password } = req.body;
   if (!email || !password) {
     return res
@@ -12,7 +12,7 @@ const login = async (req, res) => {
   }
 
   try {
-    const user = await Signup.findOne({
+    const user = await User.findOne({
       where: { email },
     });
 
@@ -30,13 +30,15 @@ const login = async (req, res) => {
       });
     }
 
+    const authenticationToken = setUser(user);
+
     return res.status(200).json({
       message: "Loggedin Successfully",
+      token: authenticationToken,
     });
   } catch (error) {
     console.log("error occured");
     return res.status(500).json({
-        
       message: error.message,
     });
   }

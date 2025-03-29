@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import api from "../../../config/axiosConfig";
 
 const Login = () => {
   const [message, setMessage] = useState(null);
@@ -17,10 +17,13 @@ const Login = () => {
     };
 
     try {
-        
-      const response = await axios.post("http://localhost:3002/login", input);
+      const response = await api.post("/login", input);
       console.log("done");
-      setMessage(response.data.message);
+
+      const { message, token } = response.data;
+
+      if (token) localStorage.setItem("token", token);
+      setMessage(message);
       setError(null);
     } catch (error) {
       console.log("Error occurred:", error);
@@ -40,7 +43,6 @@ const Login = () => {
           onSubmit={handleFormSubmit}
           className="flex flex-col justify-center items-center w-[70%] bg-gray-100 h-[50vh]"
         >
-
           <div className="p-5 ">
             <label htmlFor="email">Email : </label>
             <input
@@ -77,6 +79,5 @@ const Login = () => {
     </>
   );
 };
-
 
 export default Login;

@@ -3,27 +3,29 @@ import Header from "./Header";
 import { useEffect, useState } from "react";
 import ExpenseList from "./ExpenseList";
 import { useNavigate } from "react-router-dom";
-
+import api from "../../../config/axiosConfig";
 
 const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("worked");
-
     const fetchExpenses = async () => {
       try {
-        console.log("came");
-        const fetchedData = await axios.get(
-          "http://localhost:3010/expense/get-expenses"
-        );
-
-        const data = [...fetchedData.data];
+        const response = await api.get("/expense/get-expenses");
+        console.log("fetched data successfully")
+        const data = [...response.data.expenses ];
         console.log(data);
         setExpenses(data);
       } catch (error) {
+        
         setExpenses([]);
-        console.log("\n\n" + error);
+
+        console.log("\n\n GOT SOME ERROR");
+        if(error.response)
+        if(error.response.status == 401)
+        return navigate("/login");
+        else return console.log(error);
       }
     };
 
@@ -57,18 +59,21 @@ const Expenses = () => {
 };
 
 export const ViewExpenses = () => {
-
   const navigate = useNavigate();
-  const handleNavigate = () =>{
-    navigate('/expenses');
-  }
+  const handleNavigate = () => {
+    navigate("/expenses");
+  };
 
   return (
     <>
-      <button onClick={handleNavigate} className=" px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl">View Expenses</button>
+      <button
+        onClick={handleNavigate}
+        className=" px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
+      >
+        View Expenses
+      </button>
     </>
-  )
-  
-}
+  );
+};
 
 export default Expenses;

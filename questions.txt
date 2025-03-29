@@ -1,0 +1,7 @@
+1> when and why do we add content-type in headers.
+
+2>  headers: {
+    'Authorization': `Bearer ${token}`,
+  },
+
+  -> why Bearer word is used here and token is not directly sent
