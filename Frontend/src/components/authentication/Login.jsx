@@ -23,7 +23,7 @@ const Login = () => {
       const { message, token } = response.data;
 
       if (token) localStorage.setItem("token", token);
-      setMessage(message);
+      navigate("/");
       setError(null);
     } catch (error) {
       console.log("Error occurred:", error);
@@ -36,12 +36,20 @@ const Login = () => {
     }
   };
 
+  // const checkAlreadyLoggedin(){
+
+  //   if(localStorage.getItem('token')){
+
+  //   }
+    
+  // }
+
   return (
     <>
-      <div className="flex flex-col justify-center items-center signup-body w-[100vw] h-[100vh]">
+      <div className="flex justify-center mt-[100px] signup-body bg-">
         <form
           onSubmit={handleFormSubmit}
-          className="flex flex-col justify-center items-center w-[70%] bg-gray-100 h-[50vh]"
+          className="flex flex-col justify-center md-w[50%] xl:w-[40%] items-center w-[70%] shadow-2xl h-[50vh] rounded-2xl"
         >
           <div className="p-5 ">
             <label htmlFor="email">Email : </label>

@@ -7,3 +7,5 @@
 7> Use already existing features of css rtather than manual styling
 8> item which is going to be their alway, don't give them a fixed width rather give padding , and play with alignment of item inside it
 9> node.js tutorial
+10> to save myself from writing to many breakpoints, i can give max-width and content size much half of the box, so when screen shrinks, then content
+    does not overflow until very good extent , and at eventual breakpoint just change number of items in one grid.

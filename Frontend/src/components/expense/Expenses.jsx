@@ -13,19 +13,17 @@ const Expenses = () => {
     const fetchExpenses = async () => {
       try {
         const response = await api.get("/expense/get-expenses");
-        console.log("fetched data successfully")
-        const data = [...response.data.expenses ];
+        console.log("fetched data successfully");
+        const data = [...response.data.expenses];
         console.log(data);
         setExpenses(data);
       } catch (error) {
-
         setExpenses([]);
 
         console.log("\n\n GOT SOME ERROR");
-        if(error.response)
-        if(error.response.status == 401)
-        return navigate("/login");
-        else return console.log(error);
+        if (error.response)
+          if (error.response.status == 401) return navigate("/login");
+          else return console.log(error);
       }
     };
 
@@ -34,8 +32,8 @@ const Expenses = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center h-[100vh] w-[100%] bg-white">
-        <div className=" w-[70%] h-[80%] bg-white shadow-2xl rounded-4xl overflow-auto ">
+      <div className="flex justify-center items-center h-[100%] pt-[10px] w-[100%] bg-white relative">
+        <div className=" min-w-[90%] md:min-w-[70%] mx-[5vw] sm:min-w-[80%]  h-[80vh] bg-white shadow-2xl  rounded-4xl overflow-auto ">
           <Header />
 
           {expenses.map((expense, idx) => {

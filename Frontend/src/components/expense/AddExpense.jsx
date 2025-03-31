@@ -119,7 +119,7 @@ export const AddExpenseButton = () => {
         onClick={handleNavigate}
         className=" px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
       >
-        Add Expense
+        Add <span className="hidden xl:block ">Expense</span>
       </button>
     </>
   );

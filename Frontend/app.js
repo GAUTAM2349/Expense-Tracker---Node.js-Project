@@ -46,6 +46,19 @@ const appRouter = createBrowserRouter([
       {
         path : "/add-expense",
         element : <AddExpense/>
+      },
+
+      {
+        path : "/premium",
+        element : <AppLayout/>,
+        // children : [
+
+        //     {
+        //       path : "/dashboard",
+              
+        //     }
+          
+        // ]
       }
       
     ],
