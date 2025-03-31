@@ -18,7 +18,7 @@ const Expenses = () => {
         console.log(data);
         setExpenses(data);
       } catch (error) {
-        
+
         setExpenses([]);
 
         console.log("\n\n GOT SOME ERROR");
@@ -35,7 +35,7 @@ const Expenses = () => {
   return (
     <>
       <div className="flex justify-center items-center h-[100vh] w-[100%] bg-white">
-        <div className=" w-[70%] h-[80%] bg-white shadow-2xl rounded-4xl">
+        <div className=" w-[70%] h-[80%] bg-white shadow-2xl rounded-4xl overflow-auto ">
           <Header />
 
           {expenses.map((expense, idx) => {

@@ -1,7 +1,7 @@
 const { sequelize } = require("./config/database");
 
 const express = require("express");
-const { signupRouter, loginRouter, expenseRouter } = require("./routes");
+const { signupRouter, loginRouter, expenseRouter, cashfreeRouter } = require("./routes");
 const cors = require("cors");
 const { logIncomingRequests } = require("./middlewares/requests");
 const usersOnly = require("./middlewares/auth");
@@ -17,6 +17,7 @@ const PORT = 3002;
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/expense", usersOnly, expenseRouter);
+app.use("/cashfree",usersOnly, cashfreeRouter);
 
 const syncDB = async () => {
   await sequelize.sync({ alter: true });

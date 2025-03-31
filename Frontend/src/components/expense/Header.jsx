@@ -6,7 +6,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex bg-indigo-700  h-16 py-5 px-3 ">
+      <div className="flex bg-indigo-700  h-16 py-5 px-3 sticky top-0">
         <div className="mx-3">
           Select :
           <input type={selectType} className="bg-white mx-3 p-2" />

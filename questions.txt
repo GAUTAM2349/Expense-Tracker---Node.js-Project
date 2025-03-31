@@ -5,3 +5,6 @@
   },
 
   -> why Bearer word is used here and token is not directly sent
+
+3> .env
+4> webhooks  (send payent notification)

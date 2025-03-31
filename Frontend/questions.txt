@@ -1,2 +1,9 @@
 1> what is significance of adding type="module"?
 2> all moudle import export ways?
+3> sandbox
+4> flex- grow, shrink bias
+5> scroll component
+6> css battle
+7> Use already existing features of css rtather than manual styling
+8> item which is going to be their alway, don't give them a fixed width rather give padding , and play with alignment of item inside it
+9> node.js tutorial

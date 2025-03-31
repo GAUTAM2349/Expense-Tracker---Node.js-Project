@@ -7,10 +7,12 @@ import Login from "./src/components/authentication/Login";
 import Profile from "./src/components/user/Profile";
 import Expenses from "./src/components/expense/Expenses";
 import AddExpense from "./src/components/expense/AddExpense";
+import Nav from "./src/components/header/Nav";
 
 const AppLayout = () => {
   return (
     <>
+      <Nav/>
       <Outlet />
     </>
   );
