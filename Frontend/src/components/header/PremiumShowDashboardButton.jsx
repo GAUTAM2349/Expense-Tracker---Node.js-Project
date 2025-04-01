@@ -7,7 +7,7 @@ const PremiumShowDashboardButton = () => {
     const navigate = useNavigate();
     
   const openDashboard = () => {
-    navigate('/premium/dashboard')
+    navigate('/premium')
   };
 
   return (

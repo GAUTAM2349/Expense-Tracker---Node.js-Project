@@ -1,22 +1,12 @@
-const { sequelize } = require('../config/database');
+const { sequelize } = require("../config/database");
 const { Expense, User } = require("../models");
 
 const premiumDashboard = async (req, res) => {
   try {
-    const result = await Expense.findAll({
-      attributes: [
-        "userId",
-        [sequelize.fn("SUM", sequelize.col("expenseAmount")), "totalExpense"],
-      ],
-      group: ["userId"],
-      include: [
-        {
-          model: User,
-          attributes: ["name"],
-          required: true,
-        },
-      ],
-      order: [[sequelize.fn("SUM", sequelize.col("expenseAmount")), "DESC"]],
+    const result = await User.findAll({
+      attributes: ["id", "name", "totalExpense"],
+
+      order: [[sequelize.col("totalExpense"), "DESC"]],
     });
 
     res.status(200).json(result);

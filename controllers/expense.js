@@ -23,11 +23,7 @@ const addExpense = async (req, res) => {
   const { expenseName, expenseDate, expenseAmount, expenseCategory } = req.body;
 
   try {
-    const user = await User.findOne({ where: { id: req.userId } });
-    if (!user)
-      return res.status(400).json({
-        message: "Middleware !user error",
-      });
+    const user = req.user;
 
     const expense = await Expense.create({
       expenseName,
@@ -36,6 +32,9 @@ const addExpense = async (req, res) => {
       expenseCategory,
       userId: user.id, // Ensure you associate the expense with the current user
     });
+
+    user.totalExpense += expenseAmount; //deletion pending
+    user.save();
 
     return res.status(201).json({ message: "Successfull" });
   } catch (error) {

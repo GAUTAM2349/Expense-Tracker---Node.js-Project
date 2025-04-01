@@ -83,9 +83,11 @@ const AddExpense = () => {
               name="expense-category"
               className=" bg-white px-2 py-2 mx-2 border border-indigo-500 rounded-2xl outline-none"
             >
-              <option value="date">Date</option>
-              <option value="month">Amount</option>
-              <option value="year">Category</option>
+              <option value="Food">Food</option>
+              <option value="Grocery">Grocery</option>
+              <option value="Bills">Bills</option>
+              <option value="Party">Party</option>
+              <option value="Extra">Extra</option>
             </select>
           </div>
 
