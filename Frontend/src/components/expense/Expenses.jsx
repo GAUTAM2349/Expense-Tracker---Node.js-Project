@@ -42,7 +42,7 @@ const Expenses = () => {
 
             return (
               <ExpenseList
-                key={idx} // Make sure to use a unique key for each item in a list
+                key={`${idx}+"expenselist`} // Make sure to use a unique key for each item in a list
                 expenseName={expenseName}
                 expenseDate={expenseDate}
                 expenseAmount={expenseAmount}

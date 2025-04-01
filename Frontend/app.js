@@ -8,11 +8,12 @@ import Profile from "./src/components/user/Profile";
 import Expenses from "./src/components/expense/Expenses";
 import AddExpense from "./src/components/expense/AddExpense";
 import Nav from "./src/components/header/Nav";
+import PremiumDashboard from "./src/components/premium/PremiumDashboard";
 
 const AppLayout = () => {
   return (
     <>
-      <Nav/>
+      <Nav />
       <Outlet />
     </>
   );
@@ -39,28 +40,19 @@ const appRouter = createBrowserRouter([
       },
 
       {
-        path : "/expenses",
-        element : <Expenses/>
+        path: "/expenses",
+        element: <Expenses />,
       },
 
       {
-        path : "/add-expense",
-        element : <AddExpense/>
+        path: "/add-expense",
+        element: <AddExpense />,
       },
 
       {
-        path : "/premium",
-        element : <AppLayout/>,
-        // children : [
-
-        //     {
-        //       path : "/dashboard",
-              
-        //     }
-          
-        // ]
-      }
-      
+        path: "/premium",
+        element: <PremiumDashboard />,
+      },
     ],
   },
 ]);
