@@ -1,10 +1,12 @@
+require('dotenv').config();
+
 const { sequelize } = require("./config/database");
 
 const express = require("express");
-const { signupRouter, loginRouter, expenseRouter, cashfreeRouter, premiumRouter } = require("./routes");
+const { signupRouter, loginRouter, expenseRouter, cashfreeRouter, premiumRouter, forgotPasswordRouter } = require("./routes");
 const cors = require("cors");
 const { logIncomingRequests } = require("./middlewares/requests");
-const usersOnly = require("./middlewares/auth");
+const usersOnly = require("./middlewares/usersOnly");
 const app = express();
 
 app.use(logIncomingRequests);
@@ -12,13 +14,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-const PORT = 3002;
+const PORT = process.env.PORT;
+console.log(PORT);
 
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/expense", usersOnly, expenseRouter);
 app.use("/cashfree",usersOnly, cashfreeRouter);
-app.use("/premium",  premiumRouter);
+app.use("/premium", usersOnly, premiumRouter);
+app.use("/forgot-password", forgotPasswordRouter);
 
 const syncDB = async () => {
   await sequelize.sync({ alter: true });

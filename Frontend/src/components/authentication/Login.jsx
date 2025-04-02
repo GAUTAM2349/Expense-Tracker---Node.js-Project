@@ -18,7 +18,7 @@ const Login = () => {
 
     try {
       const response = await api.post("/login", input);
-      console.log("done");
+      
 
       const { message, token } = response.data;
 
@@ -36,13 +36,7 @@ const Login = () => {
     }
   };
 
-  // const checkAlreadyLoggedin(){
-
-  //   if(localStorage.getItem('token')){
-
-  //   }
-    
-  // }
+  
 
   return (
     <>

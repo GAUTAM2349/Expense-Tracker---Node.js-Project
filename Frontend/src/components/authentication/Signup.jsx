@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -14,13 +16,15 @@ const Signup = () => {
       password: password.value,
     };
 
+    
+
     try {
       const response = await axios.post("http://localhost:3002/signup", input);
-      console.log("done");
+      
       setMessage(response.data.message);
       setError(null);
     } catch (error) {
-      console.log("Error occurred:", error);
+      
       if (error.response && error.response.data) {
         setError(error.response.data.message);
       } else {
@@ -29,6 +33,11 @@ const Signup = () => {
       setMessage(null);
     }
   };
+
+  
+  const redirectToLoginPage = (e) => {
+     navigate('/login');  
+  }
 
   return (
     <>
@@ -70,9 +79,11 @@ const Signup = () => {
             />
           </div>
 
-          <button type="submit" className=" bg-green-500 px-3 py-1 border rounded-2xl">
+          <button type="submit" className="cursor-pointer bg-green-500 px-3 py-1 border rounded-2xl">
             SignUp
           </button>
+
+          <div>Already a user? <span onClick={redirectToLoginPage} className="text-blue-600 cursor-pointer">Login  </span>instead</div>
 
           {message && (
           <div className="mt-4 text-green-500">{message}</div>

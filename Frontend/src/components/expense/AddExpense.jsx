@@ -28,7 +28,7 @@ const AddExpense = () => {
     try {
       
       const response = await api.post("/expense/add-expense", data);
-      console.log("working..")
+      
       setError(null);
       setMessage("Expense Added");
     } catch (error) {
@@ -98,7 +98,7 @@ const AddExpense = () => {
             Add expense
           </button>
 
-          {message && <div>{message}</div>}
+          {message && <div className= "mb-[5px] text-green-500">{message}</div>}
           {error && <div>{error}</div>}
 
           <ViewExpenses />

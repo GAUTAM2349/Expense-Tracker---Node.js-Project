@@ -39,11 +39,12 @@ const addExpense = async (req, res) => {
       }
     );
 
-    //deletion pending
+    
     await User.update(
-      { totalExpense: user.totalExpense + expenseAmount },
+      { totalExpense: Number(user.totalExpense) + Number(expenseAmount) },
       { where: { id: user.id }, transaction: transaction1 }
     );
+    
 
     await transaction1.commit();
 
@@ -93,22 +94,34 @@ const updateExpense = async (req, res) => {
   }
 };
 
-const deleteExpense = async (req, res) => {
-  const transaction1 = await sequelize.transaction();
 
+
+
+
+const deleteExpense = async (req, res) => {
+  
+  console.log("came to delete..");
   try {
+
+    const transaction1 = await sequelize.transaction();
+    
     const id = req.params.id;
-    const expense = await Expense.findByPk(id, { transaction: transaction1 });
+  
+
+    const expense = await Expense.findOne( {where : { id : id}});
+
+    console.log("expense is "+JSON.stringify(expense));
 
     if (!expense) {
       console.log("rollbcked");
-      transaction1.rollback();
+      await transaction1.rollback();
       return res.status(404).json({
+        
         success: false,
         message: "Expense not found",
       });
     }
-
+    console.log("got expense");
     await User.update(
       {
         totalExpense: req.user.totalExpense - expense.expenseAmount,
@@ -125,6 +138,7 @@ const deleteExpense = async (req, res) => {
       message: "Expense deleted successfully",
     });
   } catch (error) {
+    console.log("rollbacked 2");
     console.log(error);
     await transaction1.rollback();
     res.status(500).json({

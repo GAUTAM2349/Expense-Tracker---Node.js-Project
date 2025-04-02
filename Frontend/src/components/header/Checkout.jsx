@@ -13,10 +13,10 @@ const Checkout = () => {
   const doPayment = async () => {
     try {
       const response = await api.post("/cashfree/create-order");
-      console.log(response);
+      
       const { sessionId: paymentSessionId, orderId } = response.data;
 
-      console.log(paymentSessionId);
+      
       let checkoutOptions = {
         paymentSessionId: paymentSessionId,
         redirectTarget: "_modal",
@@ -24,11 +24,11 @@ const Checkout = () => {
       const result = await cashfree.checkout(checkoutOptions);
 
       if (result.error) {
-        console.log("came to error");
+        
         const response = await api.get(`/cashfree/payment-status/${orderId}`);
-        console.log(response);
+        
         const paymentStatus = response.data.paymentStatus;
-        console.log("payment status is "+ paymentStatus);
+        
       }
 
       if (result.redirect) {
@@ -40,7 +40,7 @@ const Checkout = () => {
         
 
         const response = await api.get(`/cashfree/payment-status/${orderId}`);
-        console.log(response);
+        
         const paymentStatus = response.data.paymentStatus;
         console.log("payment status is "+ paymentStatus);
       }

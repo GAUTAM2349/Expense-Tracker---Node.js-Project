@@ -8,18 +8,18 @@ const PremiumDashboard = () => {
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        await api.delete("/expense/delete-expense/55");
+        
 
-        console.log("came here");
-        const response = await api.get("/premium/dashboard");
+        
+        const resposnse = await api.get("/premium/dashboard");
 
         const data = [...response.data];
-        console.log(data);
+        
         setUsers(data);
       } catch (error) {
         setUsers([]);
 
-        console.log(error);
+        
         if (error.response)
           if (error.response.status == 401) return navigate("/login");
           else return console.log(error);

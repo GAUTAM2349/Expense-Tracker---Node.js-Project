@@ -2,8 +2,13 @@ const { User } = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { setUser } = require("../services/auth");
+const { Expense } = require("../models");
 
 const login = async (req, res) => {
+
+  console.log(process.env.PORT);
+  
+  
   const { email, password } = req.body;
   if (!email || !password) {
     return res
@@ -12,6 +17,10 @@ const login = async (req, res) => {
   }
 
   try {
+
+    const expense = await Expense.findOne( { where : {id : 10}});
+    console.log("\n\n Expense is "+ JSON.stringify(expense));
+    
     const user = await User.findOne({
       where: { email },
     });
