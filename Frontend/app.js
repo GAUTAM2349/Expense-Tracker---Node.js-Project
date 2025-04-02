@@ -9,6 +9,7 @@ import Expenses from "./src/components/expense/Expenses";
 import AddExpense from "./src/components/expense/AddExpense";
 import Nav from "./src/components/header/Nav";
 import PremiumDashboard from "./src/components/premium/PremiumDashboard";
+import ForgotPassword from "./src/components/authentication/ForgotPassword";
 
 const AppLayout = () => {
   return (
@@ -53,6 +54,12 @@ const appRouter = createBrowserRouter([
         path: "/premium",
         element: <PremiumDashboard />,
       },
+
+      {
+        path : "/forgot-password",
+        element : <ForgotPassword/>
+      }
+      
     ],
   },
 ]);

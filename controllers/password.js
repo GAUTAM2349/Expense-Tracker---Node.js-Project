@@ -17,11 +17,22 @@ const transporter = nodemailer.createTransport({
 
 const forgotPassword = async (req,res) => {
 
+    const receiverEmail = req.body.email;
+
+    if(!receiverEmail){
+
+        return res.status(500).json({
+            success: false,
+            message: "no email found!!",
+            error: error.message
+        })
+    }
+
     console.log("came for password mail");
 
     const mailOptions = {
         from : process.env.EMAIL,
-        to : process.env.RECEIVER_EMAIL,
+        to : receiverEmail,
         subject : 'Sending Email using Node.js',
         text : 'That was easy!'
     }
@@ -33,14 +44,14 @@ const forgotPassword = async (req,res) => {
         console.log("Email sent:", info.response);
         return res.status(200).json({
             success: true,
-            message: "Password reset email sent successfully"
+            message: "reset link sent"
         });
 
     } catch (error) {
         console.error("Email error:", error);
         return res.status(500).json({
             success: false,
-            message: "Failed to send password reset email",
+            message: "error!!",
             error: error.message
         });
     }

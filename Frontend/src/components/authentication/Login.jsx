@@ -18,7 +18,6 @@ const Login = () => {
 
     try {
       const response = await api.post("/login", input);
-      
 
       const { message, token } = response.data;
 
@@ -36,11 +35,13 @@ const Login = () => {
     }
   };
 
-  
+  const redirectToForgotPasswordPage = () => {
+    return navigate("/forgot-password");
+  };
 
   return (
     <>
-      <div className="flex justify-center mt-[100px] signup-body bg-">
+      <div className="flex justify-center mt-[100px]  bg-">
         <form
           onSubmit={handleFormSubmit}
           className="flex flex-col justify-center md-w[50%] xl:w-[40%] items-center w-[70%] shadow-2xl h-[50vh] rounded-2xl"
@@ -76,6 +77,16 @@ const Login = () => {
 
           {message && <div className="mt-4 text-green-500">{message}</div>}
           {error && <div className="mt-4 text-red-500">{error}</div>}
+          <div className="mt-[40px] mb-[3px]">
+            forgot password?{" "}
+            <span
+              onClick={redirectToForgotPasswordPage}
+              className="text-blue-600 cursor-pointer"
+            >
+              Reset password{" "}
+            </span>{" "}
+            now
+          </div>
         </form>
       </div>
     </>

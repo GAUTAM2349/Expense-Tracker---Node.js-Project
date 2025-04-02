@@ -12,17 +12,14 @@ const Expenses = () => {
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        
-        
         const response = await api.get("/expense/get-expenses");
-        
+
         const data = [...response.data.expenses];
-        
+
         setExpenses(data);
       } catch (error) {
         setExpenses([]);
 
-        
         if (error.response)
           if (error.response.status == 401) return navigate("/login");
           else return console.log(error);
