@@ -19,8 +19,10 @@ const ForgotPassword = () => {
       setErrorMessage(null);
       setEmailSentMessage(response.data.message);
     } catch (error) {
+        console.log(error)
       setEmailSentMessage(null);
-      setErrorMessage("An error occurred, please try again later.");
+      
+      setErrorMessage(error.response.data.message);
     }
   };
 

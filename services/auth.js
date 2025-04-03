@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+
+
 const secret = "ga!ut%g*)(m#$#t~!($%tt";
 
 function setUser(user) {

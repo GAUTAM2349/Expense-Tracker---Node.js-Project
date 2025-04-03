@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const { v4 : uuidv4 } = require('uuid');
+const { ForgotPasswordRequest } = require('../models');
 
 const transporter = nodemailer.createTransport({
 
@@ -15,29 +17,51 @@ const transporter = nodemailer.createTransport({
 
 
 
-const forgotPassword = async (req,res) => {
+const forgotPasswordRequest = async (req,res) => {
 
-    const receiverEmail = req.body.email;
+    console.log("came for password reset")
 
-    if(!receiverEmail){
+    const user = req.user;
 
-        return res.status(500).json({
+    if(!user){
+
+        return res.status(400).json({
             success: false,
-            message: "no email found!!",
-            error: error.message
+            message: "no user found"
         })
     }
 
+    console.log(JSON.stringify(user));
     console.log("came for password mail");
 
+    const generatedId = uuidv4();
+    
     const mailOptions = {
-        from : process.env.EMAIL,
-        to : receiverEmail,
-        subject : 'Sending Email using Node.js',
-        text : 'That was easy!'
-    }
+        from: process.env.EMAIL,
+        to: user.email,
+        subject: 'Password Reset Request',
+        html: `<a href="${process.env.BASEURL}/password/forgot-password/${generatedId}">Click here to reset your password</a>`
+      };
+      
 
     try {
+
+        //storing request in db
+
+        
+        const passwordResetRequest = await ForgotPasswordRequest.create({
+            id : generatedId,
+            userId : user.id,
+            isActive : true
+        });
+
+        if(!passwordResetRequest){
+            return res.status(500).json({
+                message : "some error occred from our side"
+            })
+        }
+        
+        console.log(JSON.stringify(passwordResetRequest))
         
         const info = await transporter.sendMail(mailOptions);
         
@@ -58,4 +82,4 @@ const forgotPassword = async (req,res) => {
     
 }
 
-module.exports = {forgotPassword};
+module.exports = {forgotPasswordRequest};

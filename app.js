@@ -13,7 +13,8 @@ const {
 } = require("./routes");
 const cors = require("cors");
 const { logIncomingRequests } = require("./middlewares/requests");
-const usersOnly = require("./middlewares/usersOnly");
+const loggedinUsersOnly = require("./middlewares/loggedinUsersOnly");
+const checkIfUser = require('./middlewares/checkIfUser');
 const app = express();
 
 app.use(logIncomingRequests);
@@ -26,10 +27,10 @@ console.log(PORT);
 
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
-app.use("/expense", usersOnly, expenseRouter);
-app.use("/cashfree", usersOnly, cashfreeRouter);
-app.use("/premium", usersOnly, premiumRouter);
-app.use("/password", passwordRouter);
+app.use("/expense", loggedinUsersOnly, expenseRouter);
+app.use("/cashfree", loggedinUsersOnly, cashfreeRouter);
+app.use("/premium", loggedinUsersOnly, premiumRouter);
+app.use("/password",checkIfUser, passwordRouter);
 
 const syncDB = async () => {
   await sequelize.sync({ alter: true });

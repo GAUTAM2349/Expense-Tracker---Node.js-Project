@@ -1,7 +1,7 @@
 const { User } = require("../models/User.js");
 const { getUser } = require("../services/auth.js");
 
-async function usersOnly(req, res, next) {
+async function loggedinUsersOnly(req, res, next) {
   try {
     const userToken = req.headers["token"];
 
@@ -28,8 +28,8 @@ async function usersOnly(req, res, next) {
 
     next();
   } catch (error) {
-    return res.json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 }
 
-module.exports = usersOnly;
+module.exports = loggedinUsersOnly;
