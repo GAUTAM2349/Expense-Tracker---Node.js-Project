@@ -10,11 +10,13 @@ const {
   cashfreeRouter,
   premiumRouter,
   passwordRouter,
+  resetPasswordRouter
 } = require("./routes");
 const cors = require("cors");
 const { logIncomingRequests } = require("./middlewares/requests");
 const loggedinUsersOnly = require("./middlewares/loggedinUsersOnly");
 const checkIfUser = require('./middlewares/checkIfUser');
+const { validatePasswordResetToken } = require("./middlewares/validdatePasswordResetToken");
 const app = express();
 
 app.use(logIncomingRequests);
@@ -30,7 +32,10 @@ app.use("/login", loginRouter);
 app.use("/expense", loggedinUsersOnly, expenseRouter);
 app.use("/cashfree", loggedinUsersOnly, cashfreeRouter);
 app.use("/premium", loggedinUsersOnly, premiumRouter);
+app.use("/reset-password",validatePasswordResetToken, resetPasswordRouter);
 app.use("/password",checkIfUser, passwordRouter);
+
+
 
 const syncDB = async () => {
   await sequelize.sync({ alter: true });

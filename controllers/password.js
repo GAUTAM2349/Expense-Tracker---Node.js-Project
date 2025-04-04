@@ -1,18 +1,17 @@
 const nodemailer = require('nodemailer');
 const { v4 : uuidv4 } = require('uuid');
 const { ForgotPasswordRequest } = require('../models');
+const { validatePasswordResetToken } = require('../middlewares/validdatePasswordResetToken');
 
 const transporter = nodemailer.createTransport({
-
-    service : 'gmail',
-    host : 'smtp@gmail.com',
-    secure : true,
-    port: 587,
-    auth : {
-        user : process.env.EMAIL,
-        pass : process.env.PASSWORD
-    }
-    
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    secure: true,  // Use 'secure: true' for SSL connection
+    port: 465,     // Use port 465 for SSL or port 587 for TLS
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
+    },
 });
 
 
@@ -40,7 +39,8 @@ const forgotPasswordRequest = async (req,res) => {
         from: process.env.EMAIL,
         to: user.email,
         subject: 'Password Reset Request',
-        html: `<a href="${process.env.BASEURL}/password/forgot-password/${generatedId}">Click here to reset your password</a>`
+        html: `<a href="${process.env.BASE_URL}/reset-password/${generatedId}">Click here to reset your password</a>`
+        // password/forgot-password/${generatedId}
       };
       
 
@@ -81,5 +81,6 @@ const forgotPasswordRequest = async (req,res) => {
     }
     
 }
+
 
 module.exports = {forgotPasswordRequest};

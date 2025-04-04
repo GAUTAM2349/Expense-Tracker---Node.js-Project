@@ -9,7 +9,7 @@ const { sequelize } = require("../config/database");
 const createOrder = async (req, res) => {
   try {
     const orderId = uuidv4();
-    const orderAmount = 15000;
+    const orderAmount = 53000;
     const orderCurrency = "INR";
     const customerId = "123";
     console.log("userid  : " + customerId);

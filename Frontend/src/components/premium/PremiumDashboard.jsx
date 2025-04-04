@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import api from "../../../config/axiosConfig";
 import PremiumExpenseList from "./PremiumExpenseList";
+import { useNavigate } from "react-router-dom";
 
 const PremiumDashboard = () => {
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchExpenses = async () => {

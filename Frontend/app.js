@@ -10,6 +10,7 @@ import AddExpense from "./src/components/expense/AddExpense";
 import Nav from "./src/components/header/Nav";
 import PremiumDashboard from "./src/components/premium/PremiumDashboard";
 import ForgotPassword from "./src/components/authentication/ForgotPassword";
+import ResetPassword from "./src/components/authentication/ResetPassword";
 
 const AppLayout = () => {
   return (
@@ -58,7 +59,13 @@ const appRouter = createBrowserRouter([
       {
         path : "/forgot-password",
         element : <ForgotPassword/>
+      },
+
+      {
+        path: "/reset-password/:resetToken",  // Add :resetToken to the path
+        element: <ResetPassword />
       }
+      
       
     ],
   },

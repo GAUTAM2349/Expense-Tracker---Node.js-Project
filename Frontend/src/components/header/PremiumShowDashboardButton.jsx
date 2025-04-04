@@ -11,10 +11,10 @@ const PremiumShowDashboardButton = () => {
   };
 
   return (
-    <div className="row">
+    <div className="row mr-0.5">
       <button
         type="submit"
-        className=" flex justify-center items-center h-[5vh] px-[1vw] py-[2vh] bg-gradient-to-r from-amber-400 to-amber-100 rounded-2xl  "
+        className=" flex justify-center  items-center h-[5vh] px-[1vw] py-[2vh] bg-gradient-to-r from-amber-400 to-amber-100 rounded-2xl  "
         id="renderBtn"
         onClick={openDashboard}
       >
