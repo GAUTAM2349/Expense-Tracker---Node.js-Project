@@ -27,6 +27,7 @@ const AddExpense = () => {
   async function sendAddExpenseRequest(data) {
     try {
       
+      setMessage(null);
       const response = await api.post("/expense/add-expense", data);
       
       setError(null);
