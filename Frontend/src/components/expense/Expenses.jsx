@@ -10,7 +10,13 @@ const Expenses = () => {
   const [showDescriptionIdx, setShowDescriptionIdx] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  let perPage = 10;
+  if(localStorage.getItem('itemsPerPage')){
+    perPage = parseInt(localStorage.getItem('itemsPerPage'));
+  }
+  
+  const [itemsPerPage, setItemsPerPage] = useState(perPage);
   const [totalPages, setTotalPages] = useState(1);
 
   const navigate = useNavigate();
@@ -40,7 +46,7 @@ const Expenses = () => {
     };
 
     fetchExpenses();
-  }, [currentPage, filterType]);
+  }, [currentPage, filterType, itemsPerPage]);
 
   const convertToCSV = (data) => {
     const header = ["Expense Name", "Date", "Amount", "Category"];
@@ -59,7 +65,7 @@ const Expenses = () => {
   };
 
   const downloadCSV = () => {
-    const csvContent = convertToCSV(currentExpenses);
+    const csvContent = convertToCSV(expenses);
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
@@ -78,7 +84,7 @@ const Expenses = () => {
   return (
     <div className="flex justify-center items-center h-[100%] pt-[10px] w-[100%] bg-white relative">
       <div className="min-w-[90%] md:min-w-[70%] mx-[5vw] sm:min-w-[80%] h-[80vh] bg-white shadow-2xl rounded-4xl overflow-scroll">
-        <Header setFilterType={setFilterType} downloadCSV={downloadCSV} />
+        <Header setFilterType={setFilterType} downloadCSV={downloadCSV} setItemsPerPage={setItemsPerPage} />
 
         {expenses.map((expense, idx) => {
           const { expenseName, expenseDate, expenseAmount, expenseCategory } =
