@@ -1,22 +1,63 @@
 const { sequelize } = require("../config/database");
 const { Expense, User } = require("../models");
+const { Op } = require("sequelize");
 
-const getExpenses = async (req, res) => {
+const getPaginatedExpenses = async (req, res) => {
+  const { page = 1, limit = 10, filterType = "all" } = req.query;
+  const offset = (page - 1) * limit;
+
+  let whereCondition = {};
+
+  if (filterType === "current_date") {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(today);
+    endOfDay.setHours(23, 59, 59, 999);
+    whereCondition.expenseDate = { [Op.between]: [today, endOfDay] };
+  } else if (filterType === "this_week") {
+    const now = new Date();
+    const day = now.getDay();
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - day);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+    whereCondition.expenseDate = { [Op.between]: [startOfWeek, endOfWeek] };
+  } else if (filterType === "this_month") {
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+    whereCondition.expenseDate = { [Op.between]: [startOfMonth, endOfMonth] };
+  }
+
   try {
-    const user = await User.findOne({ where: { id: req.userId } });
-    if (!user)
-      return res.status(400).json({
-        message: "Middleware !user error",
-      });
+    const totalExpenses = await Expense.count({ where: whereCondition });
 
-    const expenses = await user.getExpenses();
-
-    return res.status(200).json({ expenses: expenses });
-  } catch (error) {
-    return res.status(500).json({
-      message: " \n\nError fetch expenses from database\n\n",
-      error: error.message,
+    const expenses = await Expense.findAll({
+      where: whereCondition,
+      limit: parseInt(limit),
+      offset: parseInt(offset),
     });
+
+    return res.status(200).json({
+      totalExpenses,
+      expenses,
+    });
+  } catch (error) {
+    console.error("Error fetching paginated expenses:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const getExpensesCount = async (req, res) => {
+  try {
+    const expensesCount = await Expense.count();
+    return res.status(200).json({ expensesCount });
+  } catch (error) {
+    console.error("Error fetching total expenses:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -39,12 +80,10 @@ const addExpense = async (req, res) => {
       }
     );
 
-    
     await User.update(
       { totalExpense: Number(user.totalExpense) + Number(expenseAmount) },
       { where: { id: user.id }, transaction: transaction1 }
     );
-    
 
     await transaction1.commit();
 
@@ -94,29 +133,21 @@ const updateExpense = async (req, res) => {
   }
 };
 
-
-
-
-
 const deleteExpense = async (req, res) => {
-  
   console.log("came to delete..");
   try {
-
     const transaction1 = await sequelize.transaction();
-    
+
     const id = req.params.id;
-  
 
-    const expense = await Expense.findOne( {where : { id : id}});
+    const expense = await Expense.findOne({ where: { id: id } });
 
-    console.log("expense is "+JSON.stringify(expense));
+    console.log("expense is " + JSON.stringify(expense));
 
     if (!expense) {
       console.log("rollbcked");
       await transaction1.rollback();
       return res.status(404).json({
-        
         success: false,
         message: "Expense not found",
       });
@@ -149,4 +180,10 @@ const deleteExpense = async (req, res) => {
   }
 };
 
-module.exports = { addExpense, updateExpense, getExpenses, deleteExpense };
+module.exports = {
+  addExpense,
+  updateExpense,
+  getPaginatedExpenses,
+  deleteExpense,
+  getExpensesCount,
+};

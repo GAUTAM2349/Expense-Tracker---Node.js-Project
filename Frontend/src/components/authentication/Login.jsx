@@ -44,7 +44,7 @@ const Login = () => {
       <div className="flex justify-center mt-[100px]  bg-">
         <form
           onSubmit={handleFormSubmit}
-          className="flex flex-col justify-center md-w[50%] xl:w-[40%] items-center w-[70%] shadow-2xl h-[50vh] rounded-2xl"
+          className="flex flex-col justify-center md-w[50%] xl:w-[40%] items-center w-[70%] shadow-2xl w-[95%] sm:w-[85%] md:w-[70%] h-[50vh] rounded-2xl"
         >
           <div className="p-5 ">
             <label htmlFor="email">Email : </label>

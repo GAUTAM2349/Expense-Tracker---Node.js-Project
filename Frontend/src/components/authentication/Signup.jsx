@@ -44,7 +44,7 @@ const Signup = () => {
       <div className="flex flex-col justify-center items-center signup-body mt-[100px]">
         <form
           onSubmit={handleFormSubmit} 
-          className="flex flex-col justify-center items-center xl:w-[40%] md:w-[50%] sm:w-[70%] h-[55vh] shadow-2xl rounded-2xl"
+          className="flex flex-col justify-center items-center w-[95%] sm:w-[85%] md:w-[70%] h-[55vh] shadow-2xl rounded-2xl"
         >
           <div className="p-5">
             <label htmlFor="name">Name : </label>

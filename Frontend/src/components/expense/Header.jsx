@@ -24,7 +24,7 @@ const Header = ({ setFilterType, downloadCSV }) => {
           onClick={downloadCSV}
           className="px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
         >
-          Download CSV
+          Download <span className="hidden md:inline">CSV</span>
         </button>
       </div>
 

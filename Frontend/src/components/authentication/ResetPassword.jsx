@@ -49,10 +49,10 @@ const ResetPassword = () => {
         <div className="flex justify-center mt-[100px]">
             <form
                 onSubmit={handleFormSubmit}
-                className="flex flex-col justify-center md-w[50%] xl:w-[40%] items-center w-[70%] shadow-2xl h-[50vh] rounded-2xl"
+                className="flex flex-col justify-center md-w[50%] w-[95%] sm:w-[85%] md:w-[70%] items-center shadow-2xl h-[50vh] rounded-2xl"
             >
-                <div className="p-5">
-                    <label htmlFor="newPassword">New Password</label>
+                <div className="p-5 flex flex-col sm:inline">
+                    <label htmlFor="newPassword">New Password : </label>
                     <input
                         type="password"
                         id="newPassword"
@@ -63,8 +63,9 @@ const ResetPassword = () => {
                         className="bg-white outline-0 px-1 border border-black"
                     />
                 </div>
-                <div className="p-5">
-                    <label htmlFor="confirmPassword">Confirm New Password</label>
+                
+                <div className="p-5 flex flex-col sm:inline">
+                    <label htmlFor="confirmPassword">Confirm New Password : </label>
                     <input
                         type="password"
                         id="confirmPassword"

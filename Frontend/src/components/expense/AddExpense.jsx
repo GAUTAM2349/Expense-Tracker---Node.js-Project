@@ -42,10 +42,10 @@ const AddExpense = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center h-[100vh] w-[100%] bg-white">
+      <div className="flex justify-center items-center h-[100%] w-[100%] bg-white">
         <form
           onSubmit={addExpense}
-          className="flex flex-col add-expense-cover rounded-2xl bg-white shadow-2xl justify-center items-center h-[70%] w-[70%]"
+          className="flex flex-col add-expense-cover rounded-2xl bg-white shadow-2xl justify-center items-center  mt-15 h-[70vh] w-[95%] sm:w-[85%] md:w-[70%]"
         >
           <div className="my-5 w-[50%]">
             Name of expense :

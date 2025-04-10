@@ -1,25 +1,1116 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css"/>
-  </head>
-  <body>
-    <div class="box-parent">
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
+// import Header from "./Header";
+// import { useEffect, useState } from "react";
+// import ExpenseList from "./ExpenseList";
+// import { useNavigate } from "react-router-dom";
+// import api from "../../../config/axiosConfig";
+
+// const Expenses = () => {
+//   const [expenses, setExpenses] = useState([]);
+//   const [filteredExpenses, setFilteredExpenses] = useState([]);
+//   const [filterType, setFilterType] = useState("all");
+//   const [showDescriptionIdx, setShowDescriptionIdx] = useState(null);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchExpenses = async () => {
+//       try {
+//         const response = await api.get("/expense/get-expenses");
+//         const data = [...response.data.expenses];
+//         setExpenses(data);
+//         setFilteredExpenses(data);
+//       } catch (error) {
+//         setExpenses([]);
+//         if (error.response) {
+//           if (error.response.status === 401) return navigate("/login");
+//           else return console.log(error);
+//         }
+//       }
+//     };
+
+//     fetchExpenses();
+//   }, []);
+
+//   useEffect(() => {
+//     const filterExpenses = () => {
+//       const today = new Date();
+//       const startOfWeek = new Date(today);
+//       startOfWeek.setDate(today.getDate() - today.getDay());
+//       startOfWeek.setHours(0, 0, 0, 0);
+//       const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+//       switch (filterType) {
+//         case "current_date":
+//           setFilteredExpenses(
+//             expenses.filter((expense) => {
+//               const expenseDate = new Date(expense.expenseDate);
+//               return (
+//                 expenseDate.getDate() === today.getDate() &&
+//                 expenseDate.getMonth() === today.getMonth() &&
+//                 expenseDate.getFullYear() === today.getFullYear()
+//               );
+//             })
+//           );
+//           break;
+
+//           case "this_week":
+//             setFilteredExpenses(
+//               expenses.filter((expense) => {
+//                 const expenseDate = new Date(expense.expenseDate);
+//                 const sevenDaysAgo = new Date(today);
+//                 sevenDaysAgo.setDate(today.getDate() - 7);
+
+//                 return expenseDate >= sevenDaysAgo && expenseDate <= today;
+//               })
+//             );
+//             break;
+//         case "this_month":
+//           setFilteredExpenses(
+//             expenses.filter((expense) => {
+//               const expenseDate = new Date(expense.expenseDate);
+//               return (
+//                 expenseDate.getMonth() === today.getMonth() &&
+//                 expenseDate.getFullYear() === today.getFullYear()
+//               );
+//             })
+//           );
+//           break;
+
+//         case "all":
+//           setFilteredExpenses(expenses);
+//           break;
+
+//         default:
+//           setFilteredExpenses(expenses);
+//           break;
+//       }
+//     };
+
+//     filterExpenses();
+//   }, [filterType, expenses]);
+
+//   const convertToCSV = (data) => {
+//     const header = ["Expense Name", "Date", "Amount", "Category"];
+//     const rows = data.map((expense) => [
+//       expense.expenseName,
+//       expense.expenseDate,
+//       expense.expenseAmount,
+//       expense.expenseCategory,
+//     ]);
+
+//     const csvContent = [
+//       header.join(","),
+//       ...rows.map((row) => row.join(",")),
+//     ]
+//       .map((row) => row.replace(/(?:\r\n|\n|\r)/g, ""))
+//       .join("\n");
+
+//     return csvContent;
+//   };
+
+//   const downloadCSV = () => {
+//     const csvContent = convertToCSV(filteredExpenses);
+
+//     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+//     const link = document.createElement("a");
+
+//     if (link.download !== undefined) {
+//       const url = URL.createObjectURL(blob);
+//       link.setAttribute("href", url);
+//       link.setAttribute("download", "expenses.csv");
+//       link.style.visibility = "hidden";
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//     }
+//   };
+
+//   return (
+//     <div className="flex justify-center items-center h-[100%] pt-[10px] w-[100%] bg-white relative">
+//       <div className="min-w-[90%] md:min-w-[70%] mx-[5vw] sm:min-w-[80%] h-[80vh] bg-white shadow-2xl rounded-4xl overflow-auto">
+//         <Header setFilterType={setFilterType} downloadCSV={downloadCSV} />
+
+//         {filteredExpenses.map((expense, idx) => {
+//           const { expenseName, expenseDate, expenseAmount, expenseCategory } =
+//             expense;
+
+//           return (
+//             <ExpenseList
+//               key={`${idx}+"expenselist"`}
+//               expenseName={expenseName}
+//               expenseDate={expenseDate}
+//               expenseAmount={expenseAmount}
+//               expenseCategory={expenseCategory}
+//               showDescription={idx === showDescriptionIdx}
+//               setShowDescriptionIdx={(index) => setShowDescriptionIdx(index)}
+//               idx={idx}
+//             />
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export const ViewExpenses = () => {
+//   const navigate = useNavigate();
+//   const handleNavigate = () => {
+//     navigate("/expenses");
+//   };
+
+//   return (
+//     <button
+//       onClick={handleNavigate}
+//       className="px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
+//     >
+//       View Expenses
+//     </button>
+//   );
+// };
+
+// export default Expenses;
+
+// import Header from "./Header";
+// import { useEffect, useState } from "react";
+// import ExpenseList from "./ExpenseList";
+// import { useNavigate } from "react-router-dom";
+// import api from "../../../config/axiosConfig";
+
+// const Expenses = () => {
+//   const [expenses, setExpenses] = useState([]);
+//   const [filteredExpenses, setFilteredExpenses] = useState([]);
+//   const [filterType, setFilterType] = useState("all");
+//   const [showDescriptionIdx, setShowDescriptionIdx] = useState(null);
+
+//   // **Pagination state variables added here**
+//   const [currentPage, setCurrentPage] = useState(1); // Start at page 1
+//   const [itemsPerPage, setItemsPerPage] = useState(10); // 10 items per page
+//   const [totalPages, setTotalPages] = useState(1); // Initialize totalPages state
+
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchExpenses = async () => {
+//       try {
+//         // **Dummy fetch call - Replace with your actual API call**
+//         const response = await api.get("/expense/get-expenses/0/10");
+//         const data = [...response.data.expenses];
+//         setExpenses(data);
+//         setFilteredExpenses(data); // Set filtered expenses initially as all expenses
+//         setTotalPages(Math.ceil(data.length / itemsPerPage)); // Set totalPages based on data
+//       } catch (error) {
+//         setExpenses([]);
+//         if (error.response) {
+//           if (error.response.status === 401) return navigate("/login");
+//           else return console.log(error);
+//         }
+//       }
+//     };
+
+//     fetchExpenses(); // Fetch expenses when component mounts
+//   }, []);
+
+//   useEffect(() => {
+//     const filterExpenses = () => {
+//       const today = new Date();
+//       const startOfWeek = new Date(today);
+//       startOfWeek.setDate(today.getDate() - today.getDay());
+//       startOfWeek.setHours(0, 0, 0, 0);
+//       const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+//       switch (filterType) {
+//         case "current_date":
+//           setFilteredExpenses(
+//             expenses.filter((expense) => {
+//               const expenseDate = new Date(expense.expenseDate);
+//               return (
+//                 expenseDate.getDate() === today.getDate() &&
+//                 expenseDate.getMonth() === today.getMonth() &&
+//                 expenseDate.getFullYear() === today.getFullYear()
+//               );
+//             })
+//           );
+//           break;
+
+//         case "this_week":
+//           setFilteredExpenses(
+//             expenses.filter((expense) => {
+//               const expenseDate = new Date(expense.expenseDate);
+//               const sevenDaysAgo = new Date(today);
+//               sevenDaysAgo.setDate(today.getDate() - 7);
+
+//               return expenseDate >= sevenDaysAgo && expenseDate <= today;
+//             })
+//           );
+//           break;
+
+//         case "this_month":
+//           setFilteredExpenses(
+//             expenses.filter((expense) => {
+//               const expenseDate = new Date(expense.expenseDate);
+//               return (
+//                 expenseDate.getMonth() === today.getMonth() &&
+//                 expenseDate.getFullYear() === today.getFullYear()
+//               );
+//             })
+//           );
+//           break;
+
+//         case "all":
+//           setFilteredExpenses(expenses);
+//           break;
+
+//         default:
+//           setFilteredExpenses(expenses);
+//           break;
+//       }
+//     };
+
+//     filterExpenses(); // Filter expenses whenever filterType or expenses change
+//   }, [filterType, expenses]);
+
+//   // **Pagination Logic: Get expenses for current page**
+//   useEffect(() => {
+//     setTotalPages(Math.ceil(filteredExpenses.length / itemsPerPage)); // Update totalPages when filteredExpenses changes
+//   }, [filteredExpenses]);
+
+//   // **Pagination Calculation - Get current expenses for the current page**
+//   const indexOfLastExpense = currentPage * itemsPerPage;
+//   const indexOfFirstExpense = indexOfLastExpense - itemsPerPage;
+//   const currentExpenses = filteredExpenses.slice(indexOfFirstExpense, indexOfLastExpense);
+
+//   // **Pagination function to change the current page**
+//   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+//   const convertToCSV = (data) => {
+//     const header = ["Expense Name", "Date", "Amount", "Category"];
+//     const rows = data.map((expense) => [
+//       expense.expenseName,
+//       expense.expenseDate,
+//       expense.expenseAmount,
+//       expense.expenseCategory,
+//     ]);
+
+//     const csvContent = [
+//       header.join(","),
+//       ...rows.map((row) => row.join(",")),
+//     ]
+//       .map((row) => row.replace(/(?:\r\n|\n|\r)/g, ""))
+//       .join("\n");
+
+//     return csvContent;
+//   };
+
+//   const downloadCSV = () => {
+//     const csvContent = convertToCSV(currentExpenses);
+
+//     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+//     const link = document.createElement("a");
+
+//     if (link.download !== undefined) {
+//       const url = URL.createObjectURL(blob);
+//       link.setAttribute("href", url);
+//       link.setAttribute("download", "expenses.csv");
+//       link.style.visibility = "hidden";
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//     }
+//   };
+
+//   return (
+//     <div className="flex justify-center items-center h-[100%] pt-[10px] w-[100%] bg-white relative">
+//       <div className="min-w-[90%] md:min-w-[70%] mx-[5vw] sm:min-w-[80%] h-[80vh] bg-white shadow-2xl rounded-4xl overflow-auto">
+//         <Header setFilterType={setFilterType} downloadCSV={downloadCSV} />
+
+//         {/* Render current expenses based on the current page */}
+//         {currentExpenses.map((expense, idx) => {
+//           const { expenseName, expenseDate, expenseAmount, expenseCategory } = expense;
+
+//           return (
+//             <ExpenseList
+//               key={`${idx}+"expenselist"`}
+//               expenseName={expenseName}
+//               expenseDate={expenseDate}
+//               expenseAmount={expenseAmount}
+//               expenseCategory={expenseCategory}
+//               showDescription={idx === showDescriptionIdx}
+//               setShowDescriptionIdx={(index) => setShowDescriptionIdx(index)}
+//               idx={idx}
+//             />
+//           );
+//         })}
+
+//       </div>
+
+//       {/* **Pagination Controls** */}
+//       <div className="flex justify-center items-center space-x-4 mt-5 absolute bottom-0">
+//           {/* First Page Button */}
+//           <button
+//             onClick={() => paginate(1)}
+//             disabled={currentPage === 1}
+//             className=" hidden sm:inline px-4 py-2 bg-blue-500 text-white rounded"
+//           >
+//             First
+//           </button>
+
+//           {/* Previous Page Button */}
+//           <button
+//             onClick={() => paginate(currentPage - 1)}
+//             disabled={currentPage === 1}
+//             className="px-4 py-2 bg-blue-500 text-white rounded"
+//           >
+//             &lt;
+//           </button>
+
+//           {/* **Page Number Display** */}
+//           <span className="px-4 py-2 text-xl">
+//             Page {currentPage} of {totalPages}
+//           </span>
+
+//           {/* Next Page Button */}
+//           <button
+//             onClick={() => paginate(currentPage + 1)}
+//             disabled={currentPage === totalPages}
+//             className="px-4 py-2 bg-blue-500 text-white rounded"
+//           >
+//             &gt;
+//           </button>
+
+//           {/* Last Page Button */}
+//           <button
+//             onClick={() => paginate(totalPages)}
+//             disabled={currentPage === totalPages}
+//             className="hidden sm:inline px-4 py-2 bg-blue-500 text-white rounded"
+//           >
+//             Last
+//           </button>
+//         </div>
+
+//     </div>
+//   );
+// };
+
+// export const ViewExpenses = () => {
+//   const navigate = useNavigate();
+//   const handleNavigate = () => {
+//     navigate("/expenses");
+//   };
+
+//   return (
+//     <button
+//       onClick={handleNavigate}
+//       className="px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
+//     >
+//       View Expenses
+//     </button>
+//   );
+// };
+
+// export default Expenses;
+
+import Header from "./Header";
+import { useEffect, useState } from "react";
+import ExpenseList from "./ExpenseList";
+import { useNavigate } from "react-router-dom";
+import api from "../../../config/axiosConfig";
+
+const Expenses = () => {
+  const [expenses, setExpenses] = useState([]);
+  const [filteredExpenses, setFilteredExpenses] = useState([]);
+  const [pagintagedExpense, setPaginatedExpense] = useState([]);
+  const [filterType, setFilterType] = useState("all");
+  const [showDescriptionIdx, setShowDescriptionIdx] = useState(null);
+
+  // **Pagination state variables**
+  const [currentPage, setCurrentPage] = useState(1); // Start at page 1
+  const [itemsPerPage, setItemsPerPage] = useState(10); // 10 items per page
+  const [totalPages, setTotalPages] = useState(1); // Initialize totalPages state
+  const [totalExpenses, setTotalExpenses] = useState(0); // Store the total number of expenses
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        // Fetch expenses from backend with pagination and filter ty
+        console.log("entered");
+        const res = await api(`/expense/get-expenses-count`);
+        // console.log("came here");
+        console.log(res);
+        const countOfExpenses = res.data.expensesCount;
+
+        console.log("\n\n" + "expense count is " + countOfExpenses);
+        // console.log("got out");
+
+
+        setTotalPages(Math.ceil(countOfExpenses / itemsPerPage));
+
+
+
+
+
+
+        const response = await api.get(`/expense/get-expenses`, {
+          params: {
+            page: currentPage,
+            limit: itemsPerPage,
+            filter: filterType,
+          },
+        });
+
+        const { totalExpenses, expenses } = response.data;
+
+        // Set expenses and total expenses count
+        setExpenses(expenses);
+        // setTotalExpenses(totalExpenses);
+        
+        setFilteredExpenses(expenses); // Update filteredExpenses
+      } catch (error) {
+        setExpenses([]);
+        if (error.response) {
+          if (error.response.status === 401) return navigate("/login");
+          else return console.log(error);
+        }
+      }
+    };
+
+    fetchExpenses(); // Fetch expenses when component mounts or when currentPage/filterType changes
+  }, [currentPage, filterType]); // Re-fetch when either currentPage or filterType changes
+
+
+
+
+  useEffect(() => {
+    const filterExpenses = () => {
+      const today = new Date();
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - today.getDay());
+      startOfWeek.setHours(0, 0, 0, 0);
+      const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+      switch (filterType) {
+        case "current_date":
+          setFilteredExpenses(
+            expenses.filter((expense) => {
+              const expenseDate = new Date(expense.expenseDate);
+              return (
+                expenseDate.getDate() === today.getDate() &&
+                expenseDate.getMonth() === today.getMonth() &&
+                expenseDate.getFullYear() === today.getFullYear()
+              );
+            })
+          );
+          break;
+
+        case "this_week":
+          setFilteredExpenses(
+            expenses.filter((expense) => {
+              const expenseDate = new Date(expense.expenseDate);
+              const sevenDaysAgo = new Date(today);
+              sevenDaysAgo.setDate(today.getDate() - 7);
+
+              return expenseDate >= sevenDaysAgo && expenseDate <= today;
+            })
+          );
+          break;
+
+        case "this_month":
+          setFilteredExpenses(
+            expenses.filter((expense) => {
+              const expenseDate = new Date(expense.expenseDate);
+              return (
+                expenseDate.getMonth() === today.getMonth() &&
+                expenseDate.getFullYear() === today.getFullYear()
+              );
+            })
+          );
+          break;
+
+        case "all":
+          setFilteredExpenses(expenses);
+          break;
+
+        default:
+          setFilteredExpenses(expenses);
+          break;
+      }
+    };
+
+    filterExpenses(); // Filter expenses whenever filterType or expenses change
+  }, [filterType, expenses]);
+
+  // **Pagination Logic: Get expenses for the current page**
+  const indexOfLastExpense = currentPage * itemsPerPage;
+  const indexOfFirstExpense = indexOfLastExpense - itemsPerPage;
+  const currentExpenses = filteredExpenses.slice(
+    indexOfFirstExpense,
+    indexOfLastExpense
+  );
+
+  // **Pagination function to change the current page**
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const convertToCSV = (data) => {
+    const header = ["Expense Name", "Date", "Amount", "Category"];
+    const rows = data.map((expense) => [
+      expense.expenseName,
+      expense.expenseDate,
+      expense.expenseAmount,
+      expense.expenseCategory,
+    ]);
+
+    const csvContent = [header.join(","), ...rows.map((row) => row.join(","))]
+      .map((row) => row.replace(/(?:\r\n|\n|\r)/g, ""))
+      .join("\n");
+
+    return csvContent;
+  };
+
+  const downloadCSV = () => {
+    const csvContent = convertToCSV(currentExpenses);
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "expenses.csv");
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+
+
+  return (
+    <div className="flex justify-center items-center h-[100%] pt-[10px] w-[100%] bg-white relative">
+      <div className="min-w-[90%] md:min-w-[70%] mx-[5vw] sm:min-w-[80%] h-[80vh] bg-white shadow-2xl rounded-4xl overflow-auto">
+
+        <Header setFilterType={setFilterType} downloadCSV={downloadCSV} />
+
+        {/* Render current expenses based on the current page */}
+        {currentExpenses.map((expense, idx) => {
+          const { expenseName, expenseDate, expenseAmount, expenseCategory } =
+            expense;
+
+          return (
+            <ExpenseList
+              key={`${idx}+"expenselist"`}
+              expenseName={expenseName}
+              expenseDate={expenseDate}
+              expenseAmount={expenseAmount}
+              expenseCategory={expenseCategory}
+              showDescription={idx === showDescriptionIdx}
+              setShowDescriptionIdx={(index) => setShowDescriptionIdx(index)}
+              idx={idx}
+            />
+          );
+        })}
+      </div>
+
+      {/* **Pagination Controls** */}
+      <div className="flex justify-center items-center space-x-4 mt-5 absolute bottom-0">
+        {/* First Page Button */}
+        <button
+          onClick={() => paginate(1)}
+          disabled={currentPage === 1}
+          className=" hidden sm:inline px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          First
+        </button>
+
+        {/* Previous Page Button */}
+        <button
+          onClick={() => paginate(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          &lt;
+        </button>
+
+        {/* **Page Number Display** */}
+        <span className="px-4 py-2 text-xl">
+          Page {currentPage} of {totalPages}
+        </span>
+
+        {/* Next Page Button */}
+        <button
+          onClick={() => paginate(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          &gt;
+        </button>
+
+        {/* Last Page Button */}
+        <button
+          onClick={() => paginate(totalPages)}
+          disabled={currentPage === totalPages}
+          className="hidden sm:inline px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Last
+        </button>
+      </div>
     </div>
-  </body>
-</html>
+  );
+};
+
+export const ViewExpenses = () => {
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate("/expenses");
+  };
+
+  return (
+    <button
+      onClick={handleNavigate}
+      className="px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
+    >
+      View Expenses
+    </button>
+  );
+};
+
+export default Expenses;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import Header from "./Header";
+// import { useEffect, useState } from "react";
+// import ExpenseList from "./ExpenseList";
+// import { useNavigate } from "react-router-dom";
+// import api from "../../../config/axiosConfig";
+
+// const Expenses = () => {
+//   const [expenses, setExpenses] = useState([]);
+//   const [filteredExpenses, setFilteredExpenses] = useState([]);
+//   const [filterType, setFilterType] = useState("all");
+//   const [showDescriptionIdx, setShowDescriptionIdx] = useState(null);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchExpenses = async () => {
+//       try {
+//         const response = await api.get("/expense/get-expenses");
+//         const data = [...response.data.expenses];
+//         setExpenses(data);
+//         setFilteredExpenses(data);
+//       } catch (error) {
+//         setExpenses([]);
+//         if (error.response) {
+//           if (error.response.status === 401) return navigate("/login");
+//           else return console.log(error);
+//         }
+//       }
+//     };
+
+//     fetchExpenses();
+//   }, []);
+
+//   useEffect(() => {
+//     const filterExpenses = () => {
+//       const today = new Date();
+//       const startOfWeek = new Date(today);
+//       startOfWeek.setDate(today.getDate() - today.getDay());
+//       startOfWeek.setHours(0, 0, 0, 0);
+//       const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+//       switch (filterType) {
+//         case "current_date":
+//           setFilteredExpenses(
+//             expenses.filter((expense) => {
+//               const expenseDate = new Date(expense.expenseDate);
+//               return (
+//                 expenseDate.getDate() === today.getDate() &&
+//                 expenseDate.getMonth() === today.getMonth() &&
+//                 expenseDate.getFullYear() === today.getFullYear()
+//               );
+//             })
+//           );
+//           break;
+
+//           case "this_week":
+//             setFilteredExpenses(
+//               expenses.filter((expense) => {
+//                 const expenseDate = new Date(expense.expenseDate);
+//                 const sevenDaysAgo = new Date(today);
+//                 sevenDaysAgo.setDate(today.getDate() - 7);
+
+//                 return expenseDate >= sevenDaysAgo && expenseDate <= today;
+//               })
+//             );
+//             break;
+//         case "this_month":
+//           setFilteredExpenses(
+//             expenses.filter((expense) => {
+//               const expenseDate = new Date(expense.expenseDate);
+//               return (
+//                 expenseDate.getMonth() === today.getMonth() &&
+//                 expenseDate.getFullYear() === today.getFullYear()
+//               );
+//             })
+//           );
+//           break;
+
+//         case "all":
+//           setFilteredExpenses(expenses);
+//           break;
+
+//         default:
+//           setFilteredExpenses(expenses);
+//           break;
+//       }
+//     };
+
+//     filterExpenses();
+//   }, [filterType, expenses]);
+
+//   const convertToCSV = (data) => {
+//     const header = ["Expense Name", "Date", "Amount", "Category"];
+//     const rows = data.map((expense) => [
+//       expense.expenseName,
+//       expense.expenseDate,
+//       expense.expenseAmount,
+//       expense.expenseCategory,
+//     ]);
+
+//     const csvContent = [
+//       header.join(","),
+//       ...rows.map((row) => row.join(",")),
+//     ]
+//       .map((row) => row.replace(/(?:\r\n|\n|\r)/g, ""))
+//       .join("\n");
+
+//     return csvContent;
+//   };
+
+//   const downloadCSV = () => {
+//     const csvContent = convertToCSV(filteredExpenses);
+
+//     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+//     const link = document.createElement("a");
+
+//     if (link.download !== undefined) {
+//       const url = URL.createObjectURL(blob);
+//       link.setAttribute("href", url);
+//       link.setAttribute("download", "expenses.csv");
+//       link.style.visibility = "hidden";
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//     }
+//   };
+
+//   return (
+//     <div className="flex justify-center items-center h-[100%] pt-[10px] w-[100%] bg-white relative">
+//       <div className="min-w-[90%] md:min-w-[70%] mx-[5vw] sm:min-w-[80%] h-[80vh] bg-white shadow-2xl rounded-4xl overflow-auto">
+//         <Header setFilterType={setFilterType} downloadCSV={downloadCSV} />
+
+//         {filteredExpenses.map((expense, idx) => {
+//           const { expenseName, expenseDate, expenseAmount, expenseCategory } =
+//             expense;
+
+//           return (
+//             <ExpenseList
+//               key={`${idx}+"expenselist"`}
+//               expenseName={expenseName}
+//               expenseDate={expenseDate}
+//               expenseAmount={expenseAmount}
+//               expenseCategory={expenseCategory}
+//               showDescription={idx === showDescriptionIdx}
+//               setShowDescriptionIdx={(index) => setShowDescriptionIdx(index)}
+//               idx={idx}
+//             />
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export const ViewExpenses = () => {
+//   const navigate = useNavigate();
+//   const handleNavigate = () => {
+//     navigate("/expenses");
+//   };
+
+//   return (
+//     <button
+//       onClick={handleNavigate}
+//       className="px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
+//     >
+//       View Expenses
+//     </button>
+//   );
+// };
+
+// export default Expenses;
+
+// import Header from "./Header";
+// import { useEffect, useState } from "react";
+// import ExpenseList from "./ExpenseList";
+// import { useNavigate } from "react-router-dom";
+// import api from "../../../config/axiosConfig";
+
+// const Expenses = () => {
+//   const [expenses, setExpenses] = useState([]);
+//   const [filteredExpenses, setFilteredExpenses] = useState([]);
+//   const [filterType, setFilterType] = useState("all");
+//   const [showDescriptionIdx, setShowDescriptionIdx] = useState(null);
+
+//   // **Pagination state variables added here**
+//   const [currentPage, setCurrentPage] = useState(1); // Start at page 1
+//   const [itemsPerPage, setItemsPerPage] = useState(10); // 10 items per page
+//   const [totalPages, setTotalPages] = useState(1); // Initialize totalPages state
+
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchExpenses = async () => {
+//       try {
+//         // **Dummy fetch call - Replace with your actual API call**
+//         const response = await api.get("/expense/get-expenses/0/10");
+//         const data = [...response.data.expenses];
+//         setExpenses(data);
+//         setFilteredExpenses(data); // Set filtered expenses initially as all expenses
+//         setTotalPages(Math.ceil(data.length / itemsPerPage)); // Set totalPages based on data
+//       } catch (error) {
+//         setExpenses([]);
+//         if (error.response) {
+//           if (error.response.status === 401) return navigate("/login");
+//           else return console.log(error);
+//         }
+//       }
+//     };
+
+//     fetchExpenses(); // Fetch expenses when component mounts
+//   }, []);
+
+//   useEffect(() => {
+//     const filterExpenses = () => {
+//       const today = new Date();
+//       const startOfWeek = new Date(today);
+//       startOfWeek.setDate(today.getDate() - today.getDay());
+//       startOfWeek.setHours(0, 0, 0, 0);
+//       const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+//       switch (filterType) {
+//         case "current_date":
+//           setFilteredExpenses(
+//             expenses.filter((expense) => {
+//               const expenseDate = new Date(expense.expenseDate);
+//               return (
+//                 expenseDate.getDate() === today.getDate() &&
+//                 expenseDate.getMonth() === today.getMonth() &&
+//                 expenseDate.getFullYear() === today.getFullYear()
+//               );
+//             })
+//           );
+//           break;
+
+//         case "this_week":
+//           setFilteredExpenses(
+//             expenses.filter((expense) => {
+//               const expenseDate = new Date(expense.expenseDate);
+//               const sevenDaysAgo = new Date(today);
+//               sevenDaysAgo.setDate(today.getDate() - 7);
+
+//               return expenseDate >= sevenDaysAgo && expenseDate <= today;
+//             })
+//           );
+//           break;
+
+//         case "this_month":
+//           setFilteredExpenses(
+//             expenses.filter((expense) => {
+//               const expenseDate = new Date(expense.expenseDate);
+//               return (
+//                 expenseDate.getMonth() === today.getMonth() &&
+//                 expenseDate.getFullYear() === today.getFullYear()
+//               );
+//             })
+//           );
+//           break;
+
+//         case "all":
+//           setFilteredExpenses(expenses);
+//           break;
+
+//         default:
+//           setFilteredExpenses(expenses);
+//           break;
+//       }
+//     };
+
+//     filterExpenses(); // Filter expenses whenever filterType or expenses change
+//   }, [filterType, expenses]);
+
+//   // **Pagination Logic: Get expenses for current page**
+//   useEffect(() => {
+//     setTotalPages(Math.ceil(filteredExpenses.length / itemsPerPage)); // Update totalPages when filteredExpenses changes
+//   }, [filteredExpenses]);
+
+//   // **Pagination Calculation - Get current expenses for the current page**
+//   const indexOfLastExpense = currentPage * itemsPerPage;
+//   const indexOfFirstExpense = indexOfLastExpense - itemsPerPage;
+//   const currentExpenses = filteredExpenses.slice(indexOfFirstExpense, indexOfLastExpense);
+
+//   // **Pagination function to change the current page**
+//   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+//   const convertToCSV = (data) => {
+//     const header = ["Expense Name", "Date", "Amount", "Category"];
+//     const rows = data.map((expense) => [
+//       expense.expenseName,
+//       expense.expenseDate,
+//       expense.expenseAmount,
+//       expense.expenseCategory,
+//     ]);
+
+//     const csvContent = [
+//       header.join(","),
+//       ...rows.map((row) => row.join(",")),
+//     ]
+//       .map((row) => row.replace(/(?:\r\n|\n|\r)/g, ""))
+//       .join("\n");
+
+//     return csvContent;
+//   };
+
+//   const downloadCSV = () => {
+//     const csvContent = convertToCSV(currentExpenses);
+
+//     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+//     const link = document.createElement("a");
+
+//     if (link.download !== undefined) {
+//       const url = URL.createObjectURL(blob);
+//       link.setAttribute("href", url);
+//       link.setAttribute("download", "expenses.csv");
+//       link.style.visibility = "hidden";
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//     }
+//   };
+
+//   return (
+//     <div className="flex justify-center items-center h-[100%] pt-[10px] w-[100%] bg-white relative">
+//       <div className="min-w-[90%] md:min-w-[70%] mx-[5vw] sm:min-w-[80%] h-[80vh] bg-white shadow-2xl rounded-4xl overflow-auto">
+//         <Header setFilterType={setFilterType} downloadCSV={downloadCSV} />
+
+//         {/* Render current expenses based on the current page */}
+//         {currentExpenses.map((expense, idx) => {
+//           const { expenseName, expenseDate, expenseAmount, expenseCategory } = expense;
+
+//           return (
+//             <ExpenseList
+//               key={`${idx}+"expenselist"`}
+//               expenseName={expenseName}
+//               expenseDate={expenseDate}
+//               expenseAmount={expenseAmount}
+//               expenseCategory={expenseCategory}
+//               showDescription={idx === showDescriptionIdx}
+//               setShowDescriptionIdx={(index) => setShowDescriptionIdx(index)}
+//               idx={idx}
+//             />
+//           );
+//         })}
+
+//       </div>
+
+//       {/* **Pagination Controls** */}
+//       <div className="flex justify-center items-center space-x-4 mt-5 absolute bottom-0">
+//           {/* First Page Button */}
+//           <button
+//             onClick={() => paginate(1)}
+//             disabled={currentPage === 1}
+//             className=" hidden sm:inline px-4 py-2 bg-blue-500 text-white rounded"
+//           >
+//             First
+//           </button>
+
+//           {/* Previous Page Button */}
+//           <button
+//             onClick={() => paginate(currentPage - 1)}
+//             disabled={currentPage === 1}
+//             className="px-4 py-2 bg-blue-500 text-white rounded"
+//           >
+//             &lt;
+//           </button>
+
+//           {/* **Page Number Display** */}
+//           <span className="px-4 py-2 text-xl">
+//             Page {currentPage} of {totalPages}
+//           </span>
+
+//           {/* Next Page Button */}
+//           <button
+//             onClick={() => paginate(currentPage + 1)}
+//             disabled={currentPage === totalPages}
+//             className="px-4 py-2 bg-blue-500 text-white rounded"
+//           >
+//             &gt;
+//           </button>
+
+//           {/* Last Page Button */}
+//           <button
+//             onClick={() => paginate(totalPages)}
+//             disabled={currentPage === totalPages}
+//             className="hidden sm:inline px-4 py-2 bg-blue-500 text-white rounded"
+//           >
+//             Last
+//           </button>
+//         </div>
+
+//     </div>
+//   );
+// };
+
+// export const ViewExpenses = () => {
+//   const navigate = useNavigate();
+//   const handleNavigate = () => {
+//     navigate("/expenses");
+//   };
+
+//   return (
+//     <button
+//       onClick={handleNavigate}
+//       className="px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
+//     >
+//       View Expenses
+//     </button>
+//   );
+// };
+
+// export default Expenses;
