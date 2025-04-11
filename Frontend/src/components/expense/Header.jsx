@@ -52,3 +52,4 @@ const Header = ({ setFilterType, downloadCSV, setItemsPerPage }) => {
 };
 
 export default Header;
+
