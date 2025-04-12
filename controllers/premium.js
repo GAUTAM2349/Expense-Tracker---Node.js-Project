@@ -5,14 +5,16 @@ const premiumDashboard = async (req, res) => {
   try {
     const result = await User.findAll({
       attributes: ["id", "name", "totalExpense"],
-
       order: [[sequelize.col("totalExpense"), "DESC"]],
     });
 
-    res.status(200).json(result);
+    return res.status(200).json(result);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "An error occurred while fetching data." });
+    console.error("Error fetching premium dashboard data:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching leaderboard data.",
+    });
   }
 };
 

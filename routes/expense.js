@@ -6,7 +6,8 @@ const {
   getExpenses,
   deleteExpense,
   getExpensesCount,
-  getPaginatedExpenses
+  getPaginatedExpenses,
+  downloadExpense
 } = require("../controllers/expense");
 
 
@@ -22,5 +23,7 @@ router.get('/get-expenses-count', getExpensesCount);
 
 
 router.delete( '/delete-expense/:id', deleteExpense)
+
+router.get( '/download-expense',downloadExpense);
 
 module.exports = { router };

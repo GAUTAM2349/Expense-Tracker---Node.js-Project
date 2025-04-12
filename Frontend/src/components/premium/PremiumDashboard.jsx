@@ -13,8 +13,8 @@ const PremiumDashboard = () => {
         
 
         
-        const resposnse = await api.get("/premium/dashboard");
-
+        const response = await api.get("/premium/dashboard");
+        // console.log(resposnse);
         const data = [...response.data];
         
         setUsers(data);

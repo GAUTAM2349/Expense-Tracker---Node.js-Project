@@ -10,15 +10,12 @@ const signup = async (req, res) => {
       .json({ message: "Name, email, and password are required." });
   }
 
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  if (!emailRegex.test(email)) {
+  if (!email.includes("@") || !email.includes(".")) {
     return res.status(400).json({ message: "Invalid email format." });
   }
 
   try {
-    const existingUser = await User.findOne({
-      where: { email },
-    });
+    const existingUser = await User.findOne({ where: { email } });
 
     if (existingUser) {
       return res.status(500).json({
@@ -30,7 +27,7 @@ const signup = async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const newUser = await User.create({
+    await User.create({
       name,
       email,
       password: hashedPassword,

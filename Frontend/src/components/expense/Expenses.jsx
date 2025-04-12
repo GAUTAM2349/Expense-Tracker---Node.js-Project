@@ -12,10 +12,10 @@ const Expenses = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   let perPage = 10;
-  if(localStorage.getItem('itemsPerPage')){
-    perPage = parseInt(localStorage.getItem('itemsPerPage'));
+  if (localStorage.getItem("itemsPerPage")) {
+    perPage = parseInt(localStorage.getItem("itemsPerPage"));
   }
-  
+
   const [itemsPerPage, setItemsPerPage] = useState(perPage);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -48,43 +48,30 @@ const Expenses = () => {
     fetchExpenses();
   }, [currentPage, filterType, itemsPerPage]);
 
-  const convertToCSV = (data) => {
-    const header = ["Expense Name", "Date", "Amount", "Category"];
-    const rows = data.map((expense) => [
-      expense.expenseName,
-      expense.expenseDate,
-      expense.expenseAmount,
-      expense.expenseCategory,
-    ]);
+  
+  const downloadCSV = async () => {
+    try {
+      const response = await api.get("expense/download-expense");
+      console.log(response);
 
-    const csvContent = [header.join(","), ...rows.map((row) => row.join(","))]
-      .map((row) => row.replace(/(?:\r\n|\n|\r)/g, ""))
-      .join("\n");
-
-    return csvContent;
-  };
-
-  const downloadCSV = () => {
-    const csvContent = convertToCSV(expenses);
-
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-
-    if (link.download !== undefined) {
-      const url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", "expenses.csv");
-      link.style.visibility = "hidden";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      if (response.status === 200) {
+        let a = document.createElement("a");
+        a.href = response.data.fileURL;
+        a.click();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   return (
     <div className="flex justify-center items-center h-[100%] pt-[10px] w-[100%] bg-white relative">
       <div className="min-w-[90%] md:min-w-[70%] mx-[5vw] sm:min-w-[80%] h-[80vh] bg-white shadow-2xl rounded-4xl overflow-scroll">
-        <Header setFilterType={setFilterType} downloadCSV={downloadCSV} setItemsPerPage={setItemsPerPage} />
+        <Header
+          setFilterType={setFilterType}
+          downloadCSV={downloadCSV}
+          setItemsPerPage={setItemsPerPage}
+        />
 
         {expenses.map((expense, idx) => {
           const { expenseName, expenseDate, expenseAmount, expenseCategory } =
@@ -145,7 +132,6 @@ const Expenses = () => {
         >
           {totalPages}
         </div>
-        
       </div>
     </div>
   );

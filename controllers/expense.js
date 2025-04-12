@@ -1,6 +1,7 @@
 const { sequelize } = require("../config/database");
-const { Expense, User } = require("../models");
+const { Expense, User, Download } = require("../models");
 const { Op } = require("sequelize");
+const AWS = require('aws-sdk');
 
 // GET paginated expenses
 const getPaginatedExpenses = async (req, res) => {
@@ -170,10 +171,76 @@ const deleteExpense = async (req, res) => {
   }
 };
 
+
+
+async function uploadToS3(data, fileName){
+
+  
+  let s3Bucket = new AWS.S3({
+    accessKeyId : process.env.IAM_USER_KEY,
+    secretAccessKey: process.env.IAM_USER_SECRET
+  });
+
+  
+
+    var params = {
+      Bucket : process.env.BUCKET_NAME,
+      Key : fileName,
+      Body : data,
+      ACL : 'public-read'
+    }
+
+    try{
+      const url = await s3Bucket.upload( params).promise();
+      return url.Location;
+    }catch(error){
+      return console.log('Something went wrong', err);
+    }
+    
+    
+  }
+  
+
+
+
+const downloadExpense = async (req, res) => {
+  try {
+    let expenses = await req.user.getExpenses(); // fetch expenses from DB
+    const stringifiedExpenses = JSON.stringify(expenses, ["expenseName", "expenseAmount", "expenseDate","expenseCategory"] , 2);
+
+    const fileName = `Expense_${req.user.id}_${Date.now()}.txt`;
+
+    const fileURL = await uploadToS3(stringifiedExpenses, fileName);
+
+    const transaction = await sequelize.transaction();
+
+    await Download.create({
+      fileName,
+      userId : req.user.id
+      
+    }, { transaction });
+
+    await transaction.commit();
+
+    console.log("done");
+    return res.status(200).json({ fileURL, success: true });
+  } catch (error) {
+    await transaction.rollback();
+    console.error('Error in downloadExpense:', error);
+    return res.status(500).json({ error: 'Failed to download expenses' });
+  }
+};
+
+
+
+
+
+
 module.exports = {
   addExpense,
   updateExpense,
   getPaginatedExpenses,
   deleteExpense,
   getExpensesCount,
+  downloadExpense
 };
