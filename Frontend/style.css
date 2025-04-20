@@ -9,3 +9,23 @@
     background: url('/public/logo.png');
     background-size: cover;
 }
+
+.delete-btn{
+    background: url('/public/assets/delete.png');
+    background-size: cover;
+}
+
+.edit-btn{
+    background : url('public/assets/edit.png');
+    background-size: cover;
+}
+
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }

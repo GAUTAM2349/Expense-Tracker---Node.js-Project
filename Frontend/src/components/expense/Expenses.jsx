@@ -18,7 +18,6 @@ const Expenses = () => {
 
   const [itemsPerPage, setItemsPerPage] = useState(perPage);
   const [totalPages, setTotalPages] = useState(1);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,6 +47,11 @@ const Expenses = () => {
     fetchExpenses();
   }, [currentPage, filterType, itemsPerPage]);
 
+
+  const removeExpenseFromList = (id) => {
+    setExpenses(prev => prev.filter(exp => exp.id !== id));
+  };
+  
   
   const downloadCSV = async () => {
     try {
@@ -66,7 +70,7 @@ const Expenses = () => {
 
   return (
     <div className="flex justify-center items-center h-[100%] pt-[10px] w-[100%] bg-white relative">
-      <div className="min-w-[90%] md:min-w-[70%] mx-[5vw] sm:min-w-[80%] h-[80vh] bg-white shadow-2xl rounded-4xl overflow-scroll">
+      <div className="w-[98%] md:w-[70%] sm:mx-[5vw] sm:min-w-[80%] h-[80vh] bg-white shadow-2xl rounded-4xl overflow-scroll hide-scrollbar">
         <Header
           setFilterType={setFilterType}
           downloadCSV={downloadCSV}
@@ -74,7 +78,7 @@ const Expenses = () => {
         />
 
         {expenses.map((expense, idx) => {
-          const { expenseName, expenseDate, expenseAmount, expenseCategory } =
+          const { expenseName, expenseDate, expenseAmount, expenseCategory, expenseType, id } =
             expense;
 
           return (
@@ -84,21 +88,30 @@ const Expenses = () => {
               expenseDate={expenseDate}
               expenseAmount={expenseAmount}
               expenseCategory={expenseCategory}
+              expenseType = {expenseType}
               showDescription={idx === showDescriptionIdx}
               setShowDescriptionIdx={(index) => setShowDescriptionIdx(index)}
               idx={idx}
+              id = {id}
+              onDelete={removeExpenseFromList}
             />
           );
         })}
       </div>
 
       <div className="flex absolute bottom-0">
+
+
+
         <div
           onClick={() => setCurrentPage(1)}
           className=" flex justify-center items-center rounded-4xl w-[30px] h-[30px]  p-[5px] mr-[5px] bg-blue-500 text-white cursor-pointer"
         >
           1
         </div>
+
+
+
 
         <div
           className=" flex justify-center items-center rounded-4xl w-[30px] h-[30px] p-[5px] mr-[5px] bg-blue-500 text-white cursor-pointer"
@@ -111,9 +124,15 @@ const Expenses = () => {
           {"<"}
         </div>
 
+
+
+
         <div className="ml-[10px] mr-[10px] w-[30px] h-[30px] bg-green-500 flex justify-center items-center rounded-4xl text-white">
-          {currentPage}
+          {currentPage == 0 ? 1 : currentPage}
         </div>
+
+
+
 
         <div
           className=" flex justify-center items-center rounded-4xl w-[30px] h-[30px] p-[5px] mr-[5px] bg-blue-500 text-white cursor-pointer"
@@ -126,12 +145,20 @@ const Expenses = () => {
           {">"}
         </div>
 
+
+
+
+
         <div
           onClick={() => setCurrentPage(totalPages)}
           className=" flex justify-center items-center rounded-4xl w-[30px] h-[30px] p-[5px] mr-[5px] bg-blue-500 text-white cursor-pointer"
         >
-          {totalPages}
+          {totalPages == 0 ? 1 : totalPages}
         </div>
+
+
+
+
       </div>
     </div>
   );

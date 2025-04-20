@@ -4,7 +4,7 @@ const { getUser } = require("../services/auth.js");
 async function loggedinUsersOnly(req, res, next) {
   try {
     const userToken = req.headers["token"];
-
+    
     if (!userToken) {
       return res
         .status(401)
@@ -13,10 +13,12 @@ async function loggedinUsersOnly(req, res, next) {
 
     const token = userToken.split("Bearer ")[1];
     const userId = getUser(token).id;
+    console.log("use is : \n\n"+userId);
 
     if (!userId) return res.status(401).json({ message: "Invalid user" });
 
     req.userId = userId;
+    console.log("middleware got : "+userId);
     const user = await User.findOne({ where: { id: userId } });
 
     if (!user)

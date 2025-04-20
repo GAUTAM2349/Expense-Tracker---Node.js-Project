@@ -12,4 +12,4 @@ const Download = sequelize.define('downloads',{
     
 })
 
-module.exports = { Download };
+module.exports = { Download };  

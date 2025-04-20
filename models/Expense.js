@@ -21,7 +21,13 @@ const Expense = sequelize.define( 'expense', {
     expenseCategory :{
         type : DataTypes.STRING,
         allowNull : false
-    }
+    },
+
+    expenseType :{   //credit or debit
+        type : DataTypes.STRING,
+        allowNull : false
+    },
+
     
 }, {
     timestamps : false

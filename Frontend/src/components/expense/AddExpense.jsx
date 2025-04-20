@@ -7,6 +7,7 @@ import api from "../../../config/axiosConfig";
 const AddExpense = () => {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const addExpense = (event) => {
     event.preventDefault();
@@ -15,23 +16,25 @@ const AddExpense = () => {
     const expenseDate = event.target.elements["expense-date"].value;
     const expenseAmount = event.target.elements["expense-amount"].value;
     const expenseCategory = event.target.elements["expense-category"].value;
-    
+    const expenseType = event.target.elements["expense-type"].value;
+
     sendAddExpenseRequest({
       expenseName,
       expenseDate,
       expenseAmount,
       expenseCategory,
+      expenseType
     });
   };
 
   async function sendAddExpenseRequest(data) {
     try {
-      
       setMessage(null);
       const response = await api.post("/expense/add-expense", data);
-      
+
       setError(null);
       setMessage("Expense Added");
+      navigate('/expenses');
     } catch (error) {
       console.log(error);
       if (error.response && error.response.data)
@@ -62,6 +65,7 @@ const AddExpense = () => {
             <input
               type="number"
               required
+              min="1"
               name="expense-amount"
               className="bg-white px-2 py-2 mx-2 border border-indigo-500 rounded-2xl outline-none"
             />
@@ -92,6 +96,21 @@ const AddExpense = () => {
             </select>
           </div>
 
+
+          <div className="my-5 w-[50%]">
+            Type :
+            <select
+              id="sort-by"
+              name="expense-type"
+              className=" bg-white px-2 py-2 mx-2 border border-indigo-500 rounded-2xl outline-none"
+            >
+              <option value="debit">Debit</option>
+              <option value="credit">Credit</option>
+              
+            </select>
+          </div>
+
+
           <button
             type="submit"
             className=" px-7 py-3 bg-indigo-500 text-white text-xl rounded-4xl"
@@ -99,7 +118,7 @@ const AddExpense = () => {
             Add expense
           </button>
 
-          {message && <div className= "mb-[5px] text-green-500">{message}</div>}
+          {message && <div className="mb-[5px] text-green-500">{message}</div>}
           {error && <div>{error}</div>}
 
           <ViewExpenses />
@@ -120,9 +139,9 @@ export const AddExpenseButton = () => {
     <>
       <button
         onClick={handleNavigate}
-        className=" px-7 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
+        className=" px-3 py-3 bg-emerald-600 text-white text-xl rounded-4xl"
       >
-        Add <span className="hidden xl:block ">Expense</span>
+        <span className="">Add</span>
       </button>
     </>
   );

@@ -1,7 +1,7 @@
 const { sequelize } = require("../config/database");
 const { Expense, User, Download } = require("../models");
 const { Op } = require("sequelize");
-const AWS = require('aws-sdk');
+const AWS = require("aws-sdk");
 
 // GET paginated expenses
 const getPaginatedExpenses = async (req, res) => {
@@ -14,7 +14,8 @@ const getPaginatedExpenses = async (req, res) => {
   if (isNaN(limit) || limit <= 0) limit = 10;
 
   const offset = (page - 1) * limit;
-  const whereCondition = {};
+
+  const whereCondition = { userId: req.user.id };
 
   try {
     if (filterType === "current_date") {
@@ -38,7 +39,15 @@ const getPaginatedExpenses = async (req, res) => {
     } else if (filterType === "this_month") {
       const now = new Date();
       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+      const endOfMonth = new Date(
+        now.getFullYear(),
+        now.getMonth() + 1,
+        0,
+        23,
+        59,
+        59,
+        999
+      );
       whereCondition.expenseDate = { [Op.between]: [startOfMonth, endOfMonth] };
     }
 
@@ -57,6 +66,33 @@ const getPaginatedExpenses = async (req, res) => {
   }
 };
 
+const getExpense = async (req, res) => {
+  console.log("\n\n came to get one expense");
+  const expenseId = req.params.id;
+  const userId = req.user.id; 
+
+  try {
+    const expense = await Expense.findOne({
+      where: {
+        id: expenseId,
+        userId: userId,
+      },
+    });
+
+    if (!expense) {
+      console.log("1111");
+      return res
+        .status(404)
+        .json({ message: "Expense not found or access denied." });
+    }
+    console.log("sending expense " + expense.toJSON());
+    return res.status(200).json({ expense });
+  } catch (error) {
+    console.error("Error fetching expense:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
 // GET total count
 const getExpensesCount = async (req, res) => {
   try {
@@ -70,21 +106,39 @@ const getExpensesCount = async (req, res) => {
 
 // POST new expense
 const addExpense = async (req, res) => {
-  const { expenseName, expenseDate, expenseAmount, expenseCategory } = req.body;
+  const {
+    expenseName,
+    expenseDate,
+    expenseAmount,
+    expenseCategory,
+    expenseType,
+  } = req.body;
   const transaction = await sequelize.transaction();
 
   try {
     const user = req.user;
 
-    const expense = await Expense.create({
-      expenseName,
-      expenseDate,
-      expenseAmount,
-      expenseCategory,
-      userId: user.id,
-    }, { transaction });
+    const expense = await Expense.create(
+      {
+        expenseName,
+        expenseDate,
+        expenseAmount,
+        expenseCategory,
+        expenseType,
+        userId: user.id,
+      },
+      { transaction }
+    );
 
-    const newTotal = Number(user.totalExpense || 0) + Number(expenseAmount);
+    let newTotal;
+    if( expense.expenseType == 'debit'){
+      newTotal = Number(user.totalExpense || 0) + Number(expenseAmount);
+    }else{
+      newTotal = Number(user.totalExpense || 0) - Number(expenseAmount);
+    }
+    
+
+
     await User.update(
       { totalExpense: newTotal },
       { where: { id: user.id }, transaction }
@@ -118,7 +172,10 @@ const updateExpense = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    user.totalExpense = user.totalExpense - expense.expenseAmount + Number(expenseAmount);
+    if (expense.expenseType == "debit")
+      user.totalExpense = user.totalExpense - expense.expenseAmount + Number(expenseAmount);
+    else user.totalExpense = user.totalExpense - expense.expenseAmount - Number(expenseAmount);
+    
     await user.save({ transaction });
 
     expense.expenseName = expenseName;
@@ -144,13 +201,17 @@ const deleteExpense = async (req, res) => {
     const expense = await Expense.findOne({ where: { id }, transaction });
     if (!expense) {
       await transaction.rollback();
-      return res.status(404).json({ success: false, message: "Expense not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Expense not found" });
     }
 
     const user = await User.findByPk(req.user.id, { transaction });
     if (!user) {
       await transaction.rollback();
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     user.totalExpense -= expense.expenseAmount;
@@ -159,7 +220,9 @@ const deleteExpense = async (req, res) => {
     await expense.destroy({ transaction });
     await transaction.commit();
 
-    return res.status(200).json({ success: true, message: "Expense deleted successfully" });
+    return res
+      .status(200)
+      .json({ success: true, message: "Expense deleted successfully" });
   } catch (error) {
     await transaction.rollback();
     console.error("Error deleting expense:", error);
@@ -171,42 +234,36 @@ const deleteExpense = async (req, res) => {
   }
 };
 
-
-
-async function uploadToS3(data, fileName){
-
-  
+async function uploadToS3(data, fileName) {
   let s3Bucket = new AWS.S3({
-    accessKeyId : process.env.IAM_USER_KEY,
-    secretAccessKey: process.env.IAM_USER_SECRET
+    accessKeyId: process.env.IAM_USER_KEY,
+    secretAccessKey: process.env.IAM_USER_SECRET,
   });
 
-  
+  var params = {
+    Bucket: process.env.BUCKET_NAME,
+    Key: fileName,
+    Body: data,
+    ACL: "public-read",
+  };
 
-    var params = {
-      Bucket : process.env.BUCKET_NAME,
-      Key : fileName,
-      Body : data,
-      ACL : 'public-read'
-    }
-
-    try{
-      const url = await s3Bucket.upload( params).promise();
-      return url.Location;
-    }catch(error){
-      return console.log('Something went wrong', err);
-    }
-    
-    
+  try {
+    // const url = await s3Bucket.upload(params).promise();
+    // return url.Location;
+    return "temp";
+  } catch (error) {
+    return console.log("Something went wrong", err);
   }
-  
-
-
+}
 
 const downloadExpense = async (req, res) => {
   try {
     let expenses = await req.user.getExpenses(); // fetch expenses from DB
-    const stringifiedExpenses = JSON.stringify(expenses, ["expenseName", "expenseAmount", "expenseDate","expenseCategory"] , 2);
+    const stringifiedExpenses = JSON.stringify(
+      expenses,
+      ["expenseName", "expenseAmount", "expenseDate", "expenseCategory"],
+      2
+    );
 
     const fileName = `Expense_${req.user.id}_${Date.now()}.txt`;
 
@@ -214,11 +271,13 @@ const downloadExpense = async (req, res) => {
 
     const transaction = await sequelize.transaction();
 
-    await Download.create({
-      fileName,
-      userId : req.user.id
-      
-    }, { transaction });
+    await Download.create(
+      {
+        fileName,
+        userId: req.user.id,
+      },
+      { transaction }
+    );
 
     await transaction.commit();
 
@@ -226,21 +285,17 @@ const downloadExpense = async (req, res) => {
     return res.status(200).json({ fileURL, success: true });
   } catch (error) {
     await transaction.rollback();
-    console.error('Error in downloadExpense:', error);
-    return res.status(500).json({ error: 'Failed to download expenses' });
+    console.error("Error in downloadExpense:", error);
+    return res.status(500).json({ error: "Failed to download expenses" });
   }
 };
-
-
-
-
-
 
 module.exports = {
   addExpense,
   updateExpense,
   getPaginatedExpenses,
+  getExpense,
   deleteExpense,
   getExpensesCount,
-  downloadExpense
+  downloadExpense,
 };

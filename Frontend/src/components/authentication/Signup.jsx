@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../../../config/axiosConfig";
 
 const Signup = () => {
   const [message, setMessage] = useState(null);
@@ -34,6 +35,27 @@ const Signup = () => {
     }
   };
 
+
+
+
+useEffect( () => {
+
+    const isUserAlreadyLoggedin = async() =>{
+      try{
+        const response = await api.get(`/login/check-already-loggedin`);
+        console.log(response);
+        if(response.data.success)
+        navigate('/expenses');
+        
+      }catch(error){
+        console.log('login please');
+      }
+      
+    }
+    isUserAlreadyLoggedin();
+    
+  },[]);
+  
   
   const redirectToLoginPage = (e) => {
      navigate('/login');  

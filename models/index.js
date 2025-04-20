@@ -4,6 +4,7 @@ const { Expense } = require("./Expense");
 const { Order } = require("./Order");
 const { ForgotPasswordRequest } = require('./ForgotPasswordRequest');
 const { Download } = require("./Downloads");
+const { PremiumSubscription } = require("./PremiumSubscription");
 
 User.hasMany(Expense);
 Expense.belongsTo(User, {
@@ -23,6 +24,16 @@ ForgotPasswordRequest.belongsTo( User, {
 User.hasMany(Download);
 Download.belongsTo( User, {
   allowNull : false
+});
+
+User.hasOne(PremiumSubscription);
+PremiumSubscription.belongsTo(User,{
+  allowNull : false
+})
+
+Order.hasOne(PremiumSubscription);
+PremiumSubscription.belongsTo(Order,{
+  allowNull: false
 });
 
 module.exports = { User, Expense, Order, ForgotPasswordRequest, Download };

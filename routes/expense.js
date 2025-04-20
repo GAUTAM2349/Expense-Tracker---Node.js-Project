@@ -7,7 +7,8 @@ const {
   deleteExpense,
   getExpensesCount,
   getPaginatedExpenses,
-  downloadExpense
+  downloadExpense,
+  getExpense
 } = require("../controllers/expense");
 
 
@@ -19,9 +20,10 @@ router.post( '/add-expense', addExpense );
 // router.get('/get-expenses', getPaginatedExpenses);``
 // In your router file
 router.get('/get-expenses', getPaginatedExpenses);
+router.get('/get-expense/:id', getExpense);
 router.get('/get-expenses-count', getExpensesCount);
 
-
+router.put('/update-expense/:id', updateExpense);
 router.delete( '/delete-expense/:id', deleteExpense)
 
 router.get( '/download-expense',downloadExpense);

@@ -11,6 +11,7 @@ import Nav from "./src/components/header/Nav";
 import PremiumDashboard from "./src/components/premium/PremiumDashboard";
 import ForgotPassword from "./src/components/authentication/ForgotPassword";
 import ResetPassword from "./src/components/authentication/ResetPassword";
+import UpdateExpense from "./src/components/expense/UpdateExpense";
 
 const AppLayout = () => {
   return (
@@ -26,11 +27,11 @@ const appRouter = createBrowserRouter([
     path: "/",
     element: <AppLayout />,
     children: [
-      {
-        path: "/profile",
-        element: <Profile />,
-      },
 
+      {
+        path : ''
+      },
+      
       {
         path: "/login",
         element: <Login />,
@@ -50,7 +51,10 @@ const appRouter = createBrowserRouter([
         path: "/add-expense",
         element: <AddExpense />,
       },
-
+      {
+        path : "/update-expense/:id",
+        element: <UpdateExpense/>
+      },
       {
         path: "/premium",
         element: <PremiumDashboard />,

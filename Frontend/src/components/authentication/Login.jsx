@@ -1,12 +1,29 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../config/axiosConfig";
 
 const Login = () => {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
+  const [gotLoginResponse, setGotLoginResponse] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const isUserAlreadyLoggedin = async () => {
+      try {
+        const response = await api.get(`/login/check-already-loggedin`);
+        console.log("your loging check response is :" + response);
+
+        setTimeout(() => {
+          if (response.data.success) navigate("/expenses");
+        }, 1);
+      } catch (error) {
+        console.log("login please");
+      }
+    };
+    isUserAlreadyLoggedin();
+  }, []);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -21,9 +38,16 @@ const Login = () => {
 
       const { message, token } = response.data;
 
-      if (token) localStorage.setItem("token", token);
-      navigate("/");
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
       setError(null);
+      
+      setTimeout(() => {
+        navigate("/");
+      }, 500);
+      window.location.reload();
     } catch (error) {
       console.log("Error occurred:", error);
       if (error.response && error.response.data) {
@@ -75,7 +99,18 @@ const Login = () => {
             Login
           </button>
 
+          <div>
+            <span
+              onClick={() => navigate("/signup")}
+              className="text-blue-600 cursor-pointer"
+            >
+              Signup{" "}
+            </span>
+            instead
+          </div>
+
           {message && <div className="mt-4 text-green-500">{message}</div>}
+
           {error && <div className="mt-4 text-red-500">{error}</div>}
           <div className="mt-[40px] mb-[3px]">
             forgot password?{" "}

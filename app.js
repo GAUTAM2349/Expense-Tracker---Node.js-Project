@@ -37,7 +37,7 @@ const accessLogStream = fs.createWriteStream(
   { flags: 'a' }
 );
 
-app.use(morgan('combined',{stream : accessLogStream}))
+// app.use(morgan('combined',{stream : accessLogStream}))
 
 
 app.use("/signup", signupRouter);

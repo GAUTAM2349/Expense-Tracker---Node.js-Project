@@ -13,14 +13,14 @@ const createOrder = async (req, res) => {
       return res.status(401).json({ success: false, message: "Unauthorized: User not found." });
     }
 
-    const orderId = uuidv4();
+    const generatedOrderId = uuidv4();
     const orderAmount = 53000;
     const orderCurrency = "INR";
     const customerId = user.id.toString(); 
     const customerPhone = user.phone || "0000000000"; 
 
     const sessionId = await cashfreeCreateOrder(
-      orderId,
+      generatedOrderId,
       orderAmount,
       orderCurrency,
       customerId,
@@ -28,14 +28,14 @@ const createOrder = async (req, res) => {
     );
 
     const orderDetails = {
-      generatedOrderId: orderId,
+      generatedOrderId: generatedOrderId,
       orderType: "Premium Subscription",
       orderAmount,
       orderDate: new Date().toISOString(),
       orderPaymentStatus: "initiated",
     };
 
-    await user.createOrder(orderDetails, { transaction });
+    const order = await user.createOrder(orderDetails, { transaction });
 
     await transaction.commit();
 
@@ -43,11 +43,12 @@ const createOrder = async (req, res) => {
       success: true,
       message: "Order created successfully.",
       sessionId,
-      orderId,
+      generatedOrderId,
+      orderId : order.id
     });
   } catch (error) {
     await transaction.rollback();
-    console.error("Error in createOrder:", error);
+    console.log("some errror in cashfree create order");
     return res.status(500).json({
       success: false,
       message: "Failed to create order.",
@@ -84,7 +85,7 @@ const updatePaymentStatus = async (req, res) => {
 
     return res.status(200).json({ success: true, paymentStatus: status });
   } catch (error) {
-    console.error("Error in updatePaymentStatus:", error);
+    console.log('some error in cashfree update payment status')
     return res.status(500).json({ success: false, error: error.message });
   }
 };
