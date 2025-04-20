@@ -16,13 +16,15 @@ const Login = () => {
         console.log("your loging check response is :" + response);
 
         setTimeout(() => {
-          if (response.data.success) navigate("/expenses");
+          if (response.data.success) navigate("/");
         }, 1);
       } catch (error) {
         console.log("login please");
       }
     };
-    isUserAlreadyLoggedin();
+    setTimeout( () => {
+      isUserAlreadyLoggedin();
+    },500);
   }, []);
 
   const handleFormSubmit = async (e) => {

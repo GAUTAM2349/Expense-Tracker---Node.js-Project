@@ -29,7 +29,7 @@ const forgotPasswordRequest = async (req, res) => {
 
   const mailOptions = {
     from: process.env.EMAIL,
-    to: "mehersinghal32@gmail.com",
+    to: req.user.email,
     subject: "Password Reset Request",
     html: `<a href="${process.env.BASE_URL}/reset-password/${generatedId}">Click here to reset your password</a>`,
   };

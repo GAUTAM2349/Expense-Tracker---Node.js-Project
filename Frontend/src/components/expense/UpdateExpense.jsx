@@ -151,6 +151,23 @@ const UpdateExpense = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  useEffect(() => {
+    const isUserAlreadyLoggedin = async () => {
+      try {
+        const response = await api.get(`/login/check-already-loggedin`);
+        console.log("your loging check response is :" + response);
+
+        setTimeout(() => {
+          if (response.data.success) navigate("/");
+        }, 1);
+      } catch (error) {
+        console.log("login please");
+      }
+    };
+    isUserAlreadyLoggedin();
+  }, []);
+
+
   
   useEffect(() => {
     const fetchExpense = async () => {

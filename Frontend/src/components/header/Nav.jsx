@@ -35,15 +35,19 @@ const Nav = () => {
   const handleLogout = () => {
 
     localStorage.removeItem('token');
-    window.location.reload();
+    setTimeout( ()=>{
+      navigate('/login');
+      window.location.reload();
+    },500)
     
+
     
   }
   
   return (
     <>
       <div className="bg-gradient-to-r from-blue-700 via-blue-300 to-blue-400   flex items-center justify-between px-[5vw]  py-[1vh]  sticky top-0 z-10">
-        <div alt="logo" onClick={() => { navigate('/expenses')}} className="logo h-[100px]  w-[100px] bg-cover "></div>
+        <div alt="logo" onClick={() => { navigate('/')}} className="logo h-[100px]  w-[100px] bg-cover "></div>
 
         <div className="flex  gap-[10px]">
           { isPremiumUser && <PremiumShowDashboardButton />}

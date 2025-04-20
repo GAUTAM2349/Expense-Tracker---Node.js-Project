@@ -12,6 +12,7 @@ import PremiumDashboard from "./src/components/premium/PremiumDashboard";
 import ForgotPassword from "./src/components/authentication/ForgotPassword";
 import ResetPassword from "./src/components/authentication/ResetPassword";
 import UpdateExpense from "./src/components/expense/UpdateExpense";
+import HomePage from "./src/components/HomePage/HomePage";
 
 const AppLayout = () => {
   return (
@@ -29,7 +30,8 @@ const appRouter = createBrowserRouter([
     children: [
 
       {
-        path : ''
+        path : '/',
+        element : <HomePage/>
       },
       
       {

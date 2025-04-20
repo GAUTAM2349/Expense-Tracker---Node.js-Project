@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ViewExpenses } from "./Expenses";
 import api from "../../../config/axiosConfig";
@@ -26,6 +26,24 @@ const AddExpense = () => {
       expenseType
     });
   };
+
+  useEffect(() => {
+    const isUserAlreadyLoggedin = async () => {
+      try {
+        const response = await api.get(`/login/check-already-loggedin`);
+        console.log("your loging check response is :" + response);
+
+      } catch (error) {
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1);
+        console.log("login please");
+      }
+    };
+    isUserAlreadyLoggedin();
+  }, []);
+
 
   async function sendAddExpenseRequest(data) {
     try {
@@ -113,7 +131,7 @@ const AddExpense = () => {
 
           <button
             type="submit"
-            className=" px-7 py-3 bg-indigo-500 text-white text-xl rounded-4xl"
+            className=" px-7 py-3 bg-indigo-500 mb-1.5 text-white text-xl rounded-4xl"
           >
             Add expense
           </button>
