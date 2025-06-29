@@ -13,7 +13,8 @@ const ExpenseList = ({
   setShowDescriptionIdx,
   idx,
   id,
-  onDelete
+  onDelete,
+  setExpenses
 }) => {
 
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const ExpenseList = ({
         const response = await api.delete(`/expense/delete-expense/${id}`);
         console.log(response);
         onDelete(id); // update state in parent
+        
       } catch (error) {
         console.error(error);
         window.alert("Sorry can't delete expense \n" + error.message);

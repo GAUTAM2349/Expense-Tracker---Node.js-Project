@@ -1,37 +1,34 @@
-const {sequelize} = require('../config/database');
-const {DataTypes} = require('sequelize');
+// models/Expense.js
 
+const mongoose = require('mongoose');
 
-const Expense = sequelize.define( 'expense', {
+const expenseSchema = new mongoose.Schema({
+  expenseName: {
+    type: String,
+    required: true,
+  },
+  expenseDate: {
+    type: Date,
+    required: true,
+  },
+  expenseAmount: {
+    type: Number,
+    required: true,
+  },
+  expenseCategory: {
+    type: String,
+    required: true,
+  },
+  expenseType: {
+    type: String,
+    enum: ['debit', 'credit'],
+    required: true,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // optional: helpful for population if needed
+    required: true,
+  },
+}, { timestamps: true });
 
-    expenseName : {
-        type : DataTypes.STRING,
-        allowNull : false,
-    },
-
-    expenseDate : {
-        type : DataTypes.STRING,
-        allowNull : false
-    },
-
-    expenseAmount : {
-        type : DataTypes.INTEGER,
-        allowNull : false
-    },
-    expenseCategory :{
-        type : DataTypes.STRING,
-        allowNull : false
-    },
-
-    expenseType :{   //credit or debit
-        type : DataTypes.STRING,
-        allowNull : false
-    },
-
-    
-}, {
-    timestamps : false
-});
-
-
-module.exports = { Expense };
+module.exports = mongoose.model('Expense', expenseSchema);

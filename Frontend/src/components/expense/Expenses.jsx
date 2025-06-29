@@ -49,7 +49,7 @@ const Expenses = () => {
 
 
   const removeExpenseFromList = (id) => {
-    setExpenses(prev => prev.filter(exp => exp.id !== id));
+    setExpenses(prev => prev.filter(exp => exp._id !== id));
   };
   
   
@@ -78,7 +78,7 @@ const Expenses = () => {
         />
 
         {expenses.map((expense, idx) => {
-          const { expenseName, expenseDate, expenseAmount, expenseCategory, expenseType, id } =
+          const { expenseName, expenseDate, expenseAmount, expenseCategory, expenseType, _id } =
             expense;
 
           return (
@@ -92,8 +92,9 @@ const Expenses = () => {
               showDescription={idx === showDescriptionIdx}
               setShowDescriptionIdx={(index) => setShowDescriptionIdx(index)}
               idx={idx}
-              id = {id}
+              id = {_id}
               onDelete={removeExpenseFromList}
+              setExpenses = {setExpenses}
             />
           );
         })}

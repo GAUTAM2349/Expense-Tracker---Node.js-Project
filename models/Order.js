@@ -1,37 +1,30 @@
-const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/database");
+const mongoose = require('mongoose');
 
-const Order = sequelize.define(
-  "orders",
-  {
-    generatedOrderId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    orderType: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    orderAmount: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-
-    orderDate: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    orderPaymentStatus: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+const orderSchema = new mongoose.Schema({
+  generatedOrderId: {
+    type: String,
+    required: true
   },
-  {
-    timestamps: false,
-  }
-);
 
-module.exports = { Order };
+  orderType: {
+    type: String,
+    required: true
+  },
+
+  orderAmount: {
+    type: Number,
+    required: true
+  },
+
+  orderDate: {
+    type: String,
+    required: true
+  },
+
+  orderPaymentStatus: {
+    type: String,
+    required: true
+  }
+}, { timestamps: false });
+
+module.exports = mongoose.model('Order', orderSchema);

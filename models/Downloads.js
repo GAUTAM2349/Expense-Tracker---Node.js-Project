@@ -1,15 +1,10 @@
-const {sequelize} = require('../config/database');
-const {DataTypes} = require('sequelize');
+const mongoose = require('mongoose');
 
+const downloadSchema = new mongoose.Schema({
+  fileName: {
+    type: String,
+    required: true
+  }
+}, { timestamps: false });
 
-const Download = sequelize.define('downloads',{
-
-    fileName : {
-        type : DataTypes.STRING,
-        allowNull : false
-    }
-    
-    
-})
-
-module.exports = { Download };  
+module.exports = mongoose.model('Download', downloadSchema);

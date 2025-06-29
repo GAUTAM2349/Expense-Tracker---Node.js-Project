@@ -1,19 +1,15 @@
-const { Sequelize } = require("sequelize");
+const mongoose = require('mongoose');
 
-const sequelize = new Sequelize("expense_app", "root", "openitsoon", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const uri = 'mongodb+srv://gautamkumarpandey2526:46NzdHQdmuH42ylB@cluster0.p5jjvek.mongodb.net/Expense-Tracker?retryWrites=true&w=majority&appName=Cluster0';
 
-const testDatabaseConnection = async () => {
+const connectMongoDB = async () => {
   try {
-    await sequelize.authenticate();
-    console.log("\n\nDatabase Connected Successfully");
+    await mongoose.connect(uri);
+    console.log('MongoDB connected using Mongoose');
   } catch (error) {
-    console.log("\n\n Error connecting Database : " + error);
+    console.error('Mongoose connection failed:', error);
+    process.exit(1);
   }
 };
 
-testDatabaseConnection();
-
-module.exports = { sequelize };
+module.exports = connectMongoDB;

@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User } = require("../models"); // Assuming Mongoose models are exported similarly
 const bcrypt = require("bcrypt");
 
 const signup = async (req, res) => {
@@ -15,7 +15,7 @@ const signup = async (req, res) => {
   }
 
   try {
-    const existingUser = await User.findOne({ where: { email } });
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(500).json({
@@ -38,6 +38,7 @@ const signup = async (req, res) => {
       message: "User created successfully",
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       error: error.message,
     });

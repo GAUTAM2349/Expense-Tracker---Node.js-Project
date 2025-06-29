@@ -1,12 +1,5 @@
-const {sequelize} = require('../config/database');
-const {DataTypes} = require('sequelize');
+const mongoose = require('mongoose');
 
+const premiumSubscriptionSchema = new mongoose.Schema({}, { timestamps: false });
 
-const PremiumSubscription = sequelize.define('premiumSubscriptions', {
-   
-}, {
-    timestamps : false
-})
-
-
-module.exports = { PremiumSubscription };
+module.exports = mongoose.model('PremiumSubscription', premiumSubscriptionSchema);

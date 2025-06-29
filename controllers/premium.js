@@ -1,21 +1,14 @@
-const { sequelize } = require("../config/database");
-const { Expense, User } = require("../models");
-const { PremiumSubscription } = require("../models/PremiumSubscription");
+const { PremiumSubscription, User } = require("../models");
 
 const addPremiumUser = async (req, res) => {
   try {
     const user = req.user;
-    const transaction = await sequelize.transaction();
 
-    const Subscription = await PremiumSubscription.create(
-      {
-        userId: user.id,
-        orderId: req.body.orderId,
-      },
-      { transaction }
-    );
+    await PremiumSubscription.create({
+      userId: user.id,
+      orderId: req.body.orderId,
+    });
 
-    await transaction.commit();
     return res
       .status(201)
       .json({ message: "User added as premium successfully." });
@@ -29,10 +22,12 @@ const checkIfPremiumUser = async (req, res) => {
   try {
     const user = req.user;
 
-    console.log("\n\n\n\ninside premium user is vghhghg\n\n" + JSON.stringify(user)+"\n\n");
+    console.log(
+      "\n\n\n\ninside premium user is vghhghg\n\n" + JSON.stringify(user) + "\n\n"
+    );
 
     const subscriber = await PremiumSubscription.findOne({
-      where : { userId : user.id}
+      userId: user.id,
     });
 
     console.log("\n\n\n premium user is : " + JSON.stringify(subscriber));
@@ -52,10 +47,9 @@ const checkIfPremiumUser = async (req, res) => {
 
 const premiumDashboard = async (req, res) => {
   try {
-    const result = await User.findAll({
-      attributes: ["id", "name", "totalExpense"],
-      order: [[sequelize.col("totalExpense"), "DESC"]],
-    });
+    const result = await User.find({})
+      .select("id name totalExpense")
+      .sort({ totalExpense: -1 });
 
     return res.status(200).json(result);
   } catch (error) {

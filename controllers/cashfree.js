@@ -1,11 +1,8 @@
 const { v4: uuidv4 } = require("uuid");
 const { User, Order } = require("../models");
-const { sequelize } = require("../config/database");
 const { createOrder: cashfreeCreateOrder, getPaymentStatus } = require("../services/cashfreeService");
 
-// === CREATE ORDER ===
 const createOrder = async (req, res) => {
-  const transaction = await sequelize.transaction();
   try {
     const user = req.user;
 
@@ -16,8 +13,8 @@ const createOrder = async (req, res) => {
     const generatedOrderId = uuidv4();
     const orderAmount = 53000;
     const orderCurrency = "INR";
-    const customerId = user.id.toString(); 
-    const customerPhone = user.phone || "0000000000"; 
+    const customerId = user._id.toString();
+    const customerPhone = user.phone || "0000000000";
 
     const sessionId = await cashfreeCreateOrder(
       generatedOrderId,
@@ -27,28 +24,26 @@ const createOrder = async (req, res) => {
       customerPhone
     );
 
-    const orderDetails = {
-      generatedOrderId: generatedOrderId,
+    const orderDetails = new Order({
+      generatedOrderId,
       orderType: "Premium Subscription",
       orderAmount,
-      orderDate: new Date().toISOString(),
+      orderDate: new Date(),
       orderPaymentStatus: "initiated",
-    };
+      userId: user._id,
+    });
 
-    const order = await user.createOrder(orderDetails, { transaction });
-
-    await transaction.commit();
+    await orderDetails.save();
 
     return res.status(200).json({
       success: true,
       message: "Order created successfully.",
       sessionId,
       generatedOrderId,
-      orderId : order.id
+      orderId: orderDetails._id,
     });
   } catch (error) {
-    await transaction.rollback();
-    console.log("some errror in cashfree create order");
+    console.error("Error in createOrder:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to create order.",
@@ -57,7 +52,6 @@ const createOrder = async (req, res) => {
   }
 };
 
-// === UPDATE PAYMENT STATUS ===
 const updatePaymentStatus = async (req, res) => {
   try {
     const generatedOrderId = req.params.id;
@@ -72,7 +66,7 @@ const updatePaymentStatus = async (req, res) => {
       return res.status(404).json({ success: false, message: "Payment status not found." });
     }
 
-    const order = await Order.findOne({ where: { generatedOrderId } });
+    const order = await Order.findOne({ generatedOrderId });
 
     if (!order) {
       return res.status(404).json({ success: false, message: "Order not found." });
@@ -85,12 +79,10 @@ const updatePaymentStatus = async (req, res) => {
 
     return res.status(200).json({ success: true, paymentStatus: status });
   } catch (error) {
-    console.log('some error in cashfree update payment status')
+    console.error("Error in updatePaymentStatus:", error);
     return res.status(500).json({ success: false, error: error.message });
   }
 };
 
-module.exports = {
-  createOrder,
-  updatePaymentStatus,
-};
+
+module.exports = {createOrder, updatePaymentStatus}

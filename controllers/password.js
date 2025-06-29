@@ -24,8 +24,8 @@ const forgotPasswordRequest = async (req, res) => {
 
   try {
     const passwordResetRequest = await ForgotPasswordRequest.create({
-      id: generatedId,
-      userId: user.id,
+      _id: generatedId, // Explicitly use generated UUID as _id
+      userId: user.id,  // Should be an ObjectId or string as per schema
       isActive: true,
     });
 

@@ -22,6 +22,7 @@ const compression = require("compression");
 const fs = require('fs');
 const morgan = require("morgan");
 const path = require("path");
+const connectMongoDB = require("./config/database");
 const app = express();
 
 app.use(logIncomingRequests);
@@ -52,13 +53,7 @@ app.use(helmet());
 app.use(compression());
 
 
-
-const syncDB = async () => {
-  await sequelize.sync({ alter: true });
-  console.log("Database synced");
-};
-
-syncDB();
+connectMongoDB();
 
 app.listen(PORT, () => {
   console.log("Server started..");

@@ -1,10 +1,7 @@
-const { User } = require("../models/User");
-const { Expense } = require("../models");
+const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { setUser } = require("../services/auth");
-const loggedinUsersOnly = require("../middlewares/loggedinUsersOnly");
-
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -16,7 +13,7 @@ const login = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ email }); // Mongoose syntax
 
     if (!user) {
       return res.status(404).json({
@@ -47,11 +44,8 @@ const login = async (req, res) => {
   }
 };
 
-const isAlreayLoggined =  (req,res) => {
+const isAlreayLoggined = (req, res) => {
+  res.status(200).json({ success: true, message: "user loggedin" });
+};
 
-    res.status(200).json({success:true, message : "user loggedin"});
-  
-
-}
-
-module.exports = { login,isAlreayLoggined };
+module.exports = { login, isAlreayLoggined };
