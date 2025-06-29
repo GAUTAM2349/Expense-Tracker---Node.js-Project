@@ -248,9 +248,8 @@ async function uploadToS3(data, fileName) {
   };
 
   try {
-    // const url = await s3Bucket.upload(params).promise();
-    // return url.Location;
-    return "temp";
+    const url = await s3Bucket.upload(params).promise();
+    return url.Location;
   } catch (error) {
     return console.log("Something went wrong", err);
   }

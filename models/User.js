@@ -32,3 +32,5 @@ const User = sequelize.define("user", {
 })
 
 module.exports = {User};
+
+//unique field for "email" needed

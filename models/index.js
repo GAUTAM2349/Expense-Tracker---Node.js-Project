@@ -6,10 +6,12 @@ const { ForgotPasswordRequest } = require('./ForgotPasswordRequest');
 const { Download } = require("./Downloads");
 const { PremiumSubscription } = require("./PremiumSubscription");
 
+// one - many
 User.hasMany(Expense);
 Expense.belongsTo(User, {
   allowNull: false,
 });
+
 
 User.hasMany(Order);
 Order.belongsTo( User, {

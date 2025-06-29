@@ -3,18 +3,6 @@ const { v4: uuidv4 } = require("uuid");
 const { ForgotPasswordRequest } = require("../models");
 const { transporter } = require("../services/nodemailer");
 
-
-// const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   host: "smtp.gmail.com",
-//   port: 465,
-//   secure: true,
-//   auth: {
-//     user: process.env.EMAIL,
-//     pass: process.env.PASSWORD,
-//   },
-// });
-
 const forgotPasswordRequest = async (req, res) => {
   const user = req.user;
 
