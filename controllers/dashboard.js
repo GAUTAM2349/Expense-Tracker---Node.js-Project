@@ -4,7 +4,7 @@ const premiumDashboard = async (req, res) => {
   try {
     const result = await User.find({}, { name: 1, totalExpense: 1 })
       .sort({ totalExpense: -1 })
-      .lean();
+      .lean(); /**************************************************************/
 
     return res.status(200).json(result);
   } catch (error) {

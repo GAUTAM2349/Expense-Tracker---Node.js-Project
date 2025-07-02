@@ -1,13 +1,15 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../config/axiosConfig";
+// import { UserContext } from "../../../utils/userProvider";
 
 const Login = () => {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [gotLoginResponse, setGotLoginResponse] = useState(false);
   const navigate = useNavigate();
+  // const {login,user,setUser} = useContext(UserContext);
 
   useEffect(() => {
     const isUserAlreadyLoggedin = async () => {
@@ -28,7 +30,7 @@ const Login = () => {
   }, []);
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     const { email, password } = e.target;
     const input = {
       email: email.value,
@@ -46,10 +48,11 @@ const Login = () => {
 
       setError(null);
       
+      // login(response.data?.user);
       setTimeout(() => {
         navigate("/");
       }, 500);
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log("Error occurred:", error);
       if (error.response && error.response.data) {
@@ -60,6 +63,10 @@ const Login = () => {
       setMessage(null);
     }
   };
+
+  // useEffect(()=>{
+  //   navigate('/');
+  // },[user]);
 
   const redirectToForgotPasswordPage = () => {
     return navigate("/forgot-password");

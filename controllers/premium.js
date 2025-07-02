@@ -21,7 +21,6 @@ const addPremiumUser = async (req, res) => {
 const checkIfPremiumUser = async (req, res) => {
   try {
     const user = req.user;
-
     console.log(
       "\n\n\n\ninside premium user is vghhghg\n\n" + JSON.stringify(user) + "\n\n"
     );

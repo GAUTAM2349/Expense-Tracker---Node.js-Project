@@ -40,7 +40,7 @@ const PremiumDashboard = () => {
 
             return (
               <PremiumExpenseList
-                key={user.id} // Using user.id as a key, assuming it’s unique
+                key={user.id+Math.random()+Math.random()+Math.random()} // Using user.id as a key, assuming it’s unique
                 userName={userName}
                 totalExpense={totalExpense}
               />

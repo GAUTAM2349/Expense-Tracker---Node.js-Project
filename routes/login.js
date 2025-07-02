@@ -5,6 +5,6 @@ const loggedinUsersOnly = require('../middlewares/loggedinUsersOnly');
 
 
 router.post('/', login);
-router.get('/check-already-loggedin',loggedinUsersOnly);
+router.get('/check-already-loggedin',loggedinUsersOnly,isAlreayLoggined);
 
 module.exports = { router };

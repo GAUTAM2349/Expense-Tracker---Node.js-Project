@@ -173,14 +173,15 @@ const UpdateExpense = () => {
     const fetchExpense = async () => {
       try {
         const response = await api.get(`/expense/get-expense/${id}`);
-        const { expenseName, expenseDate, expenseAmount, expenseCategory } = response.data.expense;
-
+        const { expenseName, expenseDate, expenseAmount, expenseCategory, } = response.data.expense;
+        console.log("expenseCategory is : ",expenseCategory)
         setFormValues({
           expenseName,
           expenseDate: expenseDate.split("T")[0], // just the date part
           expenseAmount,
           expenseCategory,
         });
+        
       } catch (err) {
         console.error(err);
         setError("Unable to fetch expense data.");
@@ -189,6 +190,10 @@ const UpdateExpense = () => {
 
     fetchExpense();
   }, []);
+
+  useEffect( ()=>{
+    console.log("here expense is ",formValues);
+  },[formValues])
 
   const updateExpense = (event) => {
     event.preventDefault();
@@ -217,6 +222,15 @@ const UpdateExpense = () => {
       else setError("some unexpected error!");
     }
   }
+
+  const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormValues((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+
 
   return (
     <div className="flex justify-center items-center h-[100%] w-[100%] bg-white">
@@ -263,7 +277,8 @@ const UpdateExpense = () => {
           <select
             id="sort-by"
             name="expense-category"
-            defaultValue={formValues.expenseCategory}
+            value={formValues.expenseCategory}
+            onChange={handleChange}
             className="bg-white px-2 py-2 mx-2 border border-indigo-500 rounded-2xl outline-none"
           >
             <option value="Food">Food</option>

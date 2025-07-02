@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
-const { ForgotPasswordRequest } = require("../models");
+const { ForgotPasswordRequest } = require("../models");       
 const { transporter } = require("../services/nodemailer");
 
 const forgotPasswordRequest = async (req, res) => {

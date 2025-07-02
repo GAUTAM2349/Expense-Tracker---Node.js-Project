@@ -46,6 +46,8 @@ const getPaginatedExpenses = async (req, res) => {
   }
 };
 
+
+
 const getExpense = async (req, res) => {
   const { id } = req.params;
   const userId = req.user._id;
@@ -94,9 +96,10 @@ const addExpense = async (req, res) => {
 
     if (expenseType === 'debit') {
       user.totalExpense += Number(expenseAmount);
-    } else {
-      user.totalExpense -= Number(expenseAmount);
-    }
+    } 
+    // else {
+    //   user.totalExpense -= Number(expenseAmount);
+    // }
 
     await user.save();
 

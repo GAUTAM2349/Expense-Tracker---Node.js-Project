@@ -38,6 +38,7 @@ const Expenses = () => {
       } catch (error) {
         setExpenses([]);
         if (error.response) {
+          console.log("\n\n LOGGING OUT FROM EXPENSE PAGE");
           if (error.response.status === 401) return navigate("/login");
           else return console.log(error);
         }

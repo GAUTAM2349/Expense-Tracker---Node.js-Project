@@ -55,7 +55,12 @@ const Nav = () => {
           { !isPremiumUser && <Checkout setIsPremiumUser={() => setIsPremiumUser(true)} />}
           { isPremiumUser && <span className=" md:text-2xl sm:mr-10 sm:font-medium  text-yellow-300  px-[1vw] py-[1vh] md:font-bold">Premium </span>}
         </div>
-        <div onClick={()=>handleLogout()} className=" sm:absolute right-0 mr-[3px] sm:mr-[10px] text-white bg-green-700 rounded-2xl p-2"><button>logout</button></div>
+        {
+          localStorage.getItem('token')?
+          <div onClick={()=>handleLogout()} className=" sm:absolute right-0 mr-[3px] sm:mr-[10px] text-white bg-green-700 rounded-2xl p-2"><button>logout</button></div>
+          : <div onClick={()=>handleLogout()} className=" sm:absolute right-0 mr-[3px] sm:mr-[10px] text-white bg-green-700 rounded-2xl p-2"><button>login</button></div>
+        }
+        
       </div>
       <div className=" w-[100vw] md:h-[0.5vh]  bg-amber-400 opacity-100  sticky top-0 "></div>
       
