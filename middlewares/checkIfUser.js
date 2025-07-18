@@ -14,7 +14,7 @@ async function checkIfUser(req, res, next) {
       });
     }
 
-    // ✅ Use Mongoose syntax
+
     const user = await User.findOne({ email: email });
 
     if (!user) {

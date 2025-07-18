@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const uri = 'mongodb+srv://gautamkumarpandey2526:46NzdHQdmuH42ylB@cluster0.p5jjvek.mongodb.net/Expense-Tracker?retryWrites=true&w=majority&appName=Cluster0';
+const uri = process.env.MONGODB_URI;
 
 const connectMongoDB = async () => {
   try {
@@ -13,3 +13,4 @@ const connectMongoDB = async () => {
 };
 
 module.exports = connectMongoDB;
+

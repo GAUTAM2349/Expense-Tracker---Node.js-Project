@@ -20,10 +20,10 @@ exports.createOrder = async (
     const request = {
       order_amount: orderAmount,
       order_currency: orderCurrency,
-      order_id: orderId, //custom and unique
+      order_id: orderId, 
       customer_details: {
-        customer_id: customerId, // custom and maaped to actual user
-        customer_phone: customerPhone, // user phone number
+        customer_id: customerId, 
+        customer_phone: customerPhone, 
       },
       order_meta: {
         return_url: `http://localhost:3002/cashfree/payment-status/${orderId}`,

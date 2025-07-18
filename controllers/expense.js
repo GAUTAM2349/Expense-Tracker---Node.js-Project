@@ -52,7 +52,7 @@ const getExpense = async (req, res) => {
   const { id } = req.params;
   const userId = req.user._id;
 
-  try {
+  try { 
     const expense = await Expense.findOne({ _id: id, userId });
     if (!expense) {
       return res.status(404).json({ message: "Expense not found or access denied." });
@@ -178,7 +178,7 @@ async function uploadToS3(data, fileName) {
 
   const params = {
     Bucket: process.env.BUCKET_NAME,
-    Key: fileName,
+    Key: fileName, 
     Body: data,
     ACL: "public-read",
   };

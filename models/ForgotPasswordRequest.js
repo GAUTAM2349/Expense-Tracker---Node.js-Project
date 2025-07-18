@@ -16,10 +16,10 @@ const forgotPasswordRequestSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    
+
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // optional: helpful for population if needed
+      ref: "User", 
       required: true,
     },
   },

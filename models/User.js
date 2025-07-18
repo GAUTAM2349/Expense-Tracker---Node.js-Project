@@ -17,11 +17,6 @@ const userSchema = new mongoose.Schema({
     required: true
   },
 
-  totalExpense: {
-    type: Number,
-    required: true,
-    default: 0
-  }
 }, { timestamps: false });
 
 module.exports = mongoose.model('User', userSchema);

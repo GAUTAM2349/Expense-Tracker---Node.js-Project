@@ -1,4 +1,4 @@
-const { User } = require("../models"); // Assuming Mongoose models are exported similarly
+const { User } = require("../models"); 
 const bcrypt = require("bcrypt");
 
 const signup = async (req, res) => {

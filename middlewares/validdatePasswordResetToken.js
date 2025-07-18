@@ -27,7 +27,7 @@ const validatePasswordResetToken = async (req, res, next) => {
 
     req.userId = forgotPasswordRequest.userId;
 
-    const user = await User.findById(req.userId); // Mongoose syntax
+    const user = await User.findById(req.userId); 
 
     if (!user) {
       return res.status(400).json({ message: 'No user exists' });

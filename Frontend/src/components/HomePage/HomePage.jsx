@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../../../config/axiosConfig.js";
 
 const HomePage = () => {
 
     const navigate = useNavigate();
-
-
-    
-    
+    const fake = api;
+        
   return (
     <>
       <div className="flex flex-col gap-4 items-center mt-6">

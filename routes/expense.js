@@ -18,7 +18,7 @@ router.post( '/add-expense', addExpense );
 
 // router.get( '/get-expenses', getExpenses );
 // router.get('/get-expenses', getPaginatedExpenses);``
-// In your router file
+
 router.get('/get-expenses', getPaginatedExpenses);
 router.get('/get-expense/:id', getExpense);
 router.get('/get-expenses-count', getExpensesCount);

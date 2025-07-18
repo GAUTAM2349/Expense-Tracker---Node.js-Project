@@ -16,7 +16,6 @@ async function loggedinUsersOnly(req, res, next) {
       return res.status(401).json({ message: "Invalid user" });
     }
 
-    // ✅ Mongoose query
     const user = await User.findById(userId);
 
     if (!user) {

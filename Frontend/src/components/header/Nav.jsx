@@ -40,7 +40,6 @@ const Nav = () => {
       window.location.reload();
     },500)
     
-
     
   }
   
